@@ -3,13 +3,23 @@
 Endpoints:
 - POST /api/generate -> JSON payload {graph_type, n, params...} returns generated nodes, edges, history
 """
+
+import sys
+import os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 from flask import Flask, request, jsonify
 from typing import Any, Dict
 import random
 from graphs import generate_ba, generate_ws, generate_er, generate_apollonian
 from propagation import GossipPropagationEngine, ProbabilisticGossip
 
-app = Flask(__name__)
+
+app = Flask(__name__, static_folder='../web', static_url_path='')
+
+@app.route('/')
+def index():
+    return app.send_static_file('index.html')
 
 
 def build_graph(params: Dict[str, Any]):
@@ -30,7 +40,17 @@ def build_graph(params: Dict[str, Any]):
 @app.route('/api/generate', methods=['POST'])
 def api_generate():
     params = request.get_json() or {}
-    G = build_graph(params)
+    
+    if 'custom_edges' in params:
+        import networkx as nx
+        G = nx.Graph()
+        if 'custom_nodes' in params:
+            G.add_nodes_from([int(n['id']) for n in params['custom_nodes']])
+        for e in params['custom_edges']:
+            G.add_edge(int(e['from']), int(e['to']))
+    else:
+        G = build_graph(params)
+
     # choose victim with degree>0
     victims = [v for v,d in G.degree() if d>0]
     if not victims:
@@ -38,14 +58,23 @@ def api_generate():
         origin = 0
         history = []
     else:
-        victim = int(params.get('victim', random.choice(victims)))
+        v_param = params.get('victim')
+        victim = int(v_param) if v_param is not None else random.choice(victims)
         neigh = list(G.neighbors(victim))
-        origin = int(params.get('origin', neigh[0] if neigh else victim))
+        o_param = params.get('origin')
+        origin = int(o_param) if o_param is not None else (neigh[0] if neigh else victim)
         mode = params.get('mode', 'local')
         q = float(params.get('q', 1.0))
         if mode == 'probabilistic':
             engine = ProbabilisticGossip(G)
-            res = engine.run(victim, origin, q=q, one_shot=False)
+            one_shot = params.get('attempt') == 'one-shot'
+            res = engine.run(victim, origin, q=q, one_shot=one_shot)
+        elif mode == 'k-hop':
+            from propagation.kth_neighbor import induced_k_hop_subgraph
+            k = int(params.get('k', 2))
+            subgraph = induced_k_hop_subgraph(G, victim, k)
+            engine = GossipPropagationEngine(subgraph)
+            res = engine.run(victim, origin, constrain_to_neighbors=False)
         else:
             engine = GossipPropagationEngine(G)
             res = engine.run(victim, origin)

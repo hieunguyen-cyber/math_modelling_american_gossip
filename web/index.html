@@ -1,216 +1,517 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Gossip Propagation Dashboard</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-      // UI bindings
-      const nNodes = document.getElementById('nNodes');
-      const nNodesVal = document.getElementById('nNodesVal');
-      const probQ = document.getElementById('probQ');
-      const probQVal = document.getElementById('probQVal');
-      const wsP = document.getElementById('wsP');
-      const wsPVal = document.getElementById('wsPVal');
-      const speed = document.getElementById('speed');
-      const speedVal = document.getElementById('speedVal');
-      const nodeSize = document.getElementById('nodeSize');
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Gossip Propagation Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+  <script src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
+  <style>
+    body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: #f8fafc; }
+    #network { height: 600px; width: 100%; border-radius: 1rem; background-color: #1e293b; box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06); outline: none;}
+    #timeline { height: 250px; width: 100%; border-radius: 1rem; overflow: hidden; }
+    .glass-panel { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
+    /* vis.js manipulation style overrides */
+    .vis-manipulation { background: rgba(30, 41, 59, 0.95) !important; color: white !important; border-top-left-radius: 1rem; border-top-right-radius: 1rem; border-bottom: 1px solid #475569 !important; padding: 8px !important; }
+    .vis-button:hover { box-shadow: 0 0 5px #14b8a6 !important; }
+    .vis-label { color: #f8fafc !important; }
+    .vis-close { right: 10px !important; }
+  </style>
+</head>
+<body class="min-h-screen p-4 md:p-8">
+  <div class="max-w-7xl mx-auto space-y-6">
+    
+    <!-- Header -->
+    <header class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-slate-700 pb-4">
+      <div>
+        <h1 class="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-teal-400 to-blue-500">Gossip Propagation Dashboard</h1>
+        <p class="text-slate-400 mt-1 text-sm">Design, customize, and simulate gossip networks</p>
+      </div>
+      <div class="mt-4 md:mt-0 flex gap-3">
+        <button id="generateBtn" class="px-5 py-2.5 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 rounded-lg font-medium shadow-lg shadow-indigo-500/30 transition-all duration-200">
+          1. Generate Base Graph
+        </button>
+        <button id="runBtn" class="px-5 py-2.5 bg-gradient-to-r from-teal-500 to-emerald-600 hover:from-teal-600 hover:to-emerald-700 rounded-lg font-medium shadow-lg shadow-teal-500/30 transition-all duration-200">
+          2. Run Propagation on Canvas
+        </button>
+      </div>
+    </header>
 
-      nNodes.oninput = () => nNodesVal.textContent = nNodes.value;
-      probQ.oninput = () => probQVal.textContent = parseFloat(probQ.value).toFixed(2);
-      wsP.oninput = () => wsPVal.textContent = parseFloat(wsP.value).toFixed(2);
-      speed.oninput = () => speedVal.textContent = speed.value + 'ms';
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+      
+      <!-- Controls Sidebar -->
+      <div class="lg:col-span-1 space-y-4">
+        <div class="glass-panel p-5 rounded-xl space-y-4 shadow-xl">
+          <h2 class="text-lg font-semibold text-white border-b border-slate-600 pb-2">Graph Builder</h2>
+          
+          <div class="space-y-3">
+            <div>
+              <label class="block text-xs font-medium text-slate-400 mb-1">Graph Model</label>
+              <select id="graphType" class="w-full bg-slate-800 border border-slate-600 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-teal-500 outline-none">
+                <option value="ba">Barabási-Albert (Scale-free)</option>
+                <option value="er">Erdős-Rényi (Random)</option>
+                <option value="ws">Watts-Strogatz (Small-world)</option>
+                <option value="apollonian">Apollonian Network</option>
+              </select>
+            </div>
+            
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="block text-xs font-medium text-slate-400 mb-1">Nodes (N)</label>
+                <input type="number" id="nNodes" value="100" min="5" max="5000" class="w-full bg-slate-800 border border-slate-600 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-teal-500 outline-none">
+              </div>
+              <div>
+                <label class="block text-xs font-medium text-slate-400 mb-1">BA Edges (m)</label>
+                <input type="number" id="baM" value="3" min="1" max="50" class="w-full bg-slate-800 border border-slate-600 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-teal-500 outline-none">
+              </div>
+              <div>
+                <label class="block text-xs font-medium text-slate-400 mb-1">Prob (p)</label>
+                <input type="number" id="wsP" value="0.1" step="0.01" min="0" max="1" class="w-full bg-slate-800 border border-slate-600 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-teal-500 outline-none">
+              </div>
+              <div>
+                <label class="block text-xs font-medium text-slate-400 mb-1">WS Near (k)</label>
+                <input type="number" id="wsK" value="6" min="2" max="100" step="2" class="w-full bg-slate-800 border border-slate-600 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-teal-500 outline-none">
+              </div>
+            </div>
+            <p class="text-[10px] text-teal-400 leading-tight">Generate a base graph first. Use the <b>Edit panel</b> in the canvas to add nodes/edges manually.</p>
+          </div>
+        </div>
 
-      let graphData = null;
-      async function loadData() {
-        try {
-          graphData = await fetch('assets/data.json').then(r => r.json());
-        } catch (e) {
-          console.warn('No data.json available, using demo dataset');
-          graphData = {
-            meta: {graph_type: 'demo'},
-            nodes: Array.from({length:50}).map((_,i)=>({id:i,label:String(i)})),
-            edges: Array.from({length:49}).map((_,i)=>({from:i,to:i+1})),
-            history: [[1],[2]]
-          };
-        }
-      }
+        <div class="glass-panel p-5 rounded-xl space-y-4 shadow-xl">
+          <h2 class="text-lg font-semibold text-white border-b border-slate-600 pb-2">Propagation Settings</h2>
+          
+          <div class="space-y-3">
+            <div>
+              <label class="block text-xs font-medium text-slate-400 mb-1">Engine Mode</label>
+              <select id="mode" class="w-full bg-slate-800 border border-slate-600 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-purple-500 outline-none">
+                <option value="local">Constrained Local (EPL 2007)</option>
+                <option value="probabilistic">Probabilistic (PRE 2007)</option>
+                <option value="k-hop">k-Hop Subgraph</option>
+              </select>
+            </div>
+            
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="block text-xs font-medium text-slate-400 mb-1">Infection Prob (q)</label>
+                <input type="number" id="probQ" min="0" max="1" step="0.05" value="1.0" class="w-full bg-slate-800 border border-slate-600 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-purple-500 outline-none">
+              </div>
+              <div>
+                <label class="block text-xs font-medium text-slate-400 mb-1">Depth (k)</label>
+                <input type="number" id="kHop" min="1" max="10" value="2" class="w-full bg-slate-800 border border-slate-600 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-purple-500 outline-none">
+              </div>
+            </div>
+          </div>
+        </div>
 
-      // initialize vis network
-      let network = null;
-      let nodesData = null;
-      let edgesData = null;
-      let selectedVictim = null;
-      let selectedOrigin = null;
+        <div class="glass-panel p-5 rounded-xl space-y-4 shadow-xl">
+          <h2 class="text-lg font-semibold text-white border-b border-slate-600 pb-2">Animation</h2>
+          
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-medium text-slate-400 mb-1">Speed (ms)</label>
+              <input type="number" id="speed" min="10" max="2000" step="10" value="800" class="w-full bg-slate-800 border border-slate-600 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none">
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-slate-400 mb-1">Node Size</label>
+              <input type="number" id="nodeSize" min="5" max="30" value="10" class="w-full bg-slate-800 border border-slate-600 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none">
+            </div>
+          </div>
+          
+          <div class="flex gap-2 pt-2">
+            <button id="playBtn" class="flex-1 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg text-sm font-medium transition-colors shadow-lg">▶ Play</button>
+            <button id="pauseBtn" class="flex-1 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg text-sm font-medium transition-colors shadow-lg">⏸ Pause</button>
+          </div>
+        </div>
+      </div>
 
-      function drawNetwork(nodes, edges) {
-        const container = document.getElementById('network');
-        nodesData = new vis.DataSet(nodes.map(n => ({id: n.id, label: n.label, color: {background: '#94a3b8'}, value: parseInt(nodeSize.value)})));
-        edgesData = new vis.DataSet(edges.map(e => ({from: e.from, to: e.to, color: '#cbd5e1'})));
-        const data = { nodes: nodesData, edges: edgesData };
-        const options = {
-          nodes: { shape: 'dot', scaling: { min:4, max:30 }, font: { size: 12 } },
-          edges: { color: {inherit:false}, smooth: {type:'continuous'} },
-          physics: { barnesHut: {gravitationalConstant: -20000}, stabilization: {iterations: 250} },
-          interaction: { hover: true, multiselect: false }
+      <!-- Main Visualization Area -->
+      <div class="lg:col-span-3 space-y-6">
+        
+        <!-- Metrics Cards -->
+        <div class="grid grid-cols-2 md:grid-cols-6 gap-4">
+          <div class="glass-panel p-3 rounded-xl text-center border-l-4 border-l-teal-500">
+            <div class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold">Victim</div>
+            <div id="metricVictim" class="text-xl font-mono font-bold text-white mt-1">-</div>
+          </div>
+          <div class="glass-panel p-3 rounded-xl text-center border-l-4 border-l-red-500">
+            <div class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold">Origin</div>
+            <div id="metricOrigin" class="text-xl font-mono font-bold text-white mt-1">-</div>
+          </div>
+          <div class="glass-panel p-3 rounded-xl text-center border-l-4 border-l-purple-500">
+            <div class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold">Spread Factor (f)</div>
+            <div id="metricF" class="text-xl font-mono font-bold text-purple-400 mt-1">0.000</div>
+          </div>
+          <div class="glass-panel p-3 rounded-xl text-center border-l-4 border-l-blue-500">
+            <div class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold">Spread Time (τ)</div>
+            <div id="metricTau" class="text-xl font-mono font-bold text-blue-400 mt-1">0</div>
+          </div>
+          <div class="glass-panel p-3 rounded-xl text-center border-l-4 border-l-emerald-500">
+            <div class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold">Current Infected</div>
+            <div id="metricCount" class="text-xl font-mono font-bold text-emerald-400 mt-1">0</div>
+          </div>
+          <div class="glass-panel p-3 rounded-xl text-center border-l-4 border-l-amber-500">
+            <div class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold">Current Frame</div>
+            <div id="metricFrame" class="text-xl font-mono font-bold text-amber-400 mt-1">0</div>
+          </div>
+        </div>
+
+        <!-- Network Graph -->
+        <div class="relative glass-panel rounded-xl p-1 shadow-2xl overflow-hidden">
+          <div class="absolute bottom-4 left-4 z-10 text-[11px] font-mono text-slate-400 bg-slate-900/80 px-2 py-1 rounded">Shift+Click to set Victim</div>
+          <div id="network"></div>
+        </div>
+
+        <!-- Timeline -->
+        <div class="glass-panel rounded-xl p-4 shadow-xl">
+          <div id="timeline"></div>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // UI bindings
+    let graphData = null;
+    let network = null;
+    let nodesData = null;
+    let edgesData = null;
+    let selectedVictim = null;
+    let selectedOrigin = null;
+
+    // Node id generator for manual insertions
+    let maxNodeId = 0;
+
+    async function loadData() {
+      try {
+        graphData = await fetch('assets/data.json').then(r => r.json());
+      } catch (e) {
+        console.warn('No data.json available, using demo dataset');
+        graphData = {
+          meta: {graph_type: 'demo'},
+          nodes: Array.from({length:10}).map((_,i)=>({id:i,label:String(i)})),
+          edges: Array.from({length:9}).map((_,i)=>({from:i,to:i+1})),
+          history: []
         };
-        if (!network) {
-          network = new vis.Network(container, data, options);
-          network.on('click', params => {
-            if (params.nodes && params.nodes.length>0) {
-              const nodeId = params.nodes[0];
-              // set as victim if shift held, otherwise origin
-              if (params.event && params.event.srcEvent && params.event.srcEvent.shiftKey) {
-                selectedVictim = nodeId;
-                document.getElementById('metricVictim').textContent = String(nodeId);
-              } else {
-                selectedOrigin = nodeId;
-                document.getElementById('metricOrigin').textContent = String(nodeId);
-              }
-              // highlight selection
-              highlightSelection();
+      }
+    }
+
+    function initNetwork(nodes, edges) {
+      const container = document.getElementById('network');
+      
+      maxNodeId = nodes.reduce((max, n) => Math.max(max, parseInt(n.id) || 0), 0);
+
+      nodesData = new vis.DataSet(nodes.map(n => ({
+        id: n.id, 
+        label: String(n.id), 
+        color: {background: '#475569', border: '#1e293b'}, 
+        borderWidth: 1, 
+        value: parseInt(document.getElementById('nodeSize').value)
+      })));
+      
+      edgesData = new vis.DataSet(edges.map(e => ({
+        from: e.from, 
+        to: e.to, 
+        color: {color: '#334155', opacity: 0.6}
+      })));
+
+      const data = { nodes: nodesData, edges: edgesData };
+      const options = {
+        nodes: { shape: 'dot', scaling: { min:4, max:30 }, font: { size: 12, color: '#f8fafc' } },
+        edges: { color: {inherit:false}, smooth: {type:'continuous'} },
+        physics: { barnesHut: {gravitationalConstant: -20000, springConstant: 0.04}, stabilization: {iterations: 250} },
+        interaction: { hover: true, multiselect: true, tooltipDelay: 200 },
+        manipulation: {
+          enabled: true,
+          addNode: function(data, callback) {
+            maxNodeId++;
+            data.id = maxNodeId;
+            data.label = String(maxNodeId);
+            data.color = {background: '#475569', border: '#1e293b'};
+            data.value = parseInt(document.getElementById('nodeSize').value);
+            callback(data);
+          },
+          addEdge: function(data, callback) {
+            if (data.from !== data.to) {
+              data.color = {color: '#334155', opacity: 0.6};
+              callback(data);
             }
-          });
-        } else {
-          network.setData(data);
+          }
         }
-      }
-
-      function highlightSelection() {
-        if (!nodesData) return;
-        const all = nodesData.get();
-        all.forEach(n => {
-          const bg = (n.id === selectedVictim) ? '#0ea5a4' : (n.id === selectedOrigin ? '#ef4444' : '#94a3b8');
-          nodesData.update({id: n.id, color: {background: bg}});
+      };
+      
+      if (!network) {
+        network = new vis.Network(container, data, options);
+        network.on('click', params => {
+          if (params.nodes && params.nodes.length === 1 && !network.manipulationMode) {
+            const nodeId = params.nodes[0];
+            // set as victim if shift held, otherwise origin
+            if (params.event && params.event.srcEvent && params.event.srcEvent.shiftKey) {
+              selectedVictim = nodeId;
+              document.getElementById('metricVictim').textContent = String(nodeId);
+            } else {
+              selectedOrigin = nodeId;
+              document.getElementById('metricOrigin').textContent = String(nodeId);
+            }
+            highlightSelection();
+          }
         });
+      } else {
+        network.setData(data);
       }
+    }
 
-      // draw timeline using Plotly
-      function drawTimeline(history) {
-        const counts = history.map(h => h.length);
-        const x = counts.map((_,i)=>i);
-        const trace = { x: x, y: counts, type: 'scatter', mode: 'lines+markers', marker:{color:'#0ea5a4'} };
-        Plotly.newPlot('timeline', [trace], {title:'Infected per timestep', margin:{t:30}});
+    function highlightSelection() {
+      if (!nodesData) return;
+      const all = nodesData.get();
+      const updates = all.map(n => {
+        let bg = '#475569';
+        let border = '#1e293b';
+        let borderWidth = 1;
+        let sid = String(n.id);
+        if (sid === String(selectedVictim)) { bg = '#14b8a6'; border = '#0d9488'; borderWidth = 3; } // teal
+        else if (sid === String(selectedOrigin)) { bg = '#ef4444'; border = '#b91c1c'; borderWidth = 3; } // red
+        return {id: n.id, color: {background: bg, border: border}, borderWidth: borderWidth};
+      });
+      nodesData.update(updates);
+    }
+
+    // draw timeline using Plotly
+    function drawTimeline(history) {
+      if (!history || history.length === 0) {
+        Plotly.newPlot('timeline', [], {paper_bgcolor: 'rgba(0,0,0,0)', plot_bgcolor: 'rgba(0,0,0,0)'});
+        return;
       }
+      
+      // Cumulative reach per timestep
+      let cumulative = new Set();
+      const counts = history.map(h => {
+        h.forEach(node => cumulative.add(node));
+        return cumulative.size;
+      });
+      const frontierCounts = history.map(h => h.length);
+      const x = counts.map((_,i)=>i);
+      
+      const trace1 = { 
+        x: x, y: counts, 
+        name: 'Total Infected',
+        type: 'scatter', mode: 'lines+markers', 
+        line: {color: '#8b5cf6', width: 3}, // purple
+        marker: {color: '#8b5cf6', size: 8}
+      };
+      
+      const trace2 = {
+        x: x, y: frontierCounts,
+        name: 'New Infections',
+        type: 'bar',
+        marker: {color: '#14b8a6', opacity: 0.7} // teal
+      };
 
-      // animation controls
-      let playTimer = null;
-      let currentFrame = 0;
+      const layout = {
+        paper_bgcolor: 'rgba(0,0,0,0)',
+        plot_bgcolor: 'rgba(0,0,0,0)',
+        font: {color: '#cbd5e1'},
+        margin: {t:30, l:50, r:20, b:40},
+        xaxis: {title: 'Timestep (τ)', gridcolor: '#334155', zerolinecolor: '#334155'},
+        yaxis: {title: 'Nodes', gridcolor: '#334155', zerolinecolor: '#334155'},
+        legend: {orientation: 'h', y: 1.1, x: 0.5, xanchor: 'center'},
+        hovermode: 'x unified'
+      };
+      Plotly.newPlot('timeline', [trace2, trace1], layout, {responsive: true, displayModeBar: false});
+    }
 
-      function setFrame(t) {
-        if (!graphData || !nodesData) return;
-        const frame = graphData.history[Math.min(t, graphData.history.length-1)] || [];
-        const infected = new Set(frame);
-        nodesData.forEach(n => {
-          const isInf = infected.has(n.id);
-          const color = isInf ? '#ef4444' : (n.id===selectedVictim? '#0ea5a4' : '#94a3b8');
-          const size = isInf ? Math.min(30, parseInt(nodeSize.value)*2) : parseInt(nodeSize.value);
-          nodesData.update({id: n.id, color: {background: color}, value: size});
-        });
-        document.getElementById('metricCount').textContent = String(frame.length);
-        document.getElementById('metricFrame').textContent = String(t);
+    // animation controls
+    let playTimer = null;
+    let currentFrame = 0;
+    let cumulativeInfected = new Set();
+
+    function setFrame(t) {
+      if (!graphData || !nodesData || !graphData.history) return;
+      const history = graphData.history;
+      
+      // Build cumulative set up to t
+      cumulativeInfected.clear();
+      for (let i = 0; i <= Math.min(t, history.length - 1); i++) {
+        history[i].forEach(n => cumulativeInfected.add(String(n)));
       }
+      
+      const currentFrontier = new Set((history[Math.min(t, history.length-1)] || []).map(String));
+      
+      const updates = nodesData.get().map(n => {
+        let bg = '#475569';
+        let border = '#1e293b';
+        let size = parseInt(document.getElementById('nodeSize').value);
+        let borderWidth = 1;
+        
+        let sid = String(n.id);
+        if (currentFrontier.has(sid)) {
+          bg = '#f59e0b'; // amber
+          border = '#d97706';
+          size = Math.min(30, size * 1.5);
+          borderWidth = 2;
+        } else if (cumulativeInfected.has(sid)) {
+          bg = '#ef4444'; // red
+          border = '#b91c1c';
+        } else if (sid === String(selectedVictim)) {
+          bg = '#14b8a6'; // teal
+          border = '#0d9488';
+          borderWidth = 3;
+        } else if (sid === String(selectedOrigin)) {
+          bg = '#a855f7'; // purple
+          border = '#7e22ce';
+          borderWidth = 3;
+        }
+        
+        return {id: n.id, color: {background: bg, border: border}, value: size, borderWidth: borderWidth};
+      });
+      nodesData.update(updates);
+      
+      document.getElementById('metricCount').textContent = String(cumulativeInfected.size);
+      document.getElementById('metricFrame').textContent = String(t);
+    }
 
-      function playHistory(history) {
-        if (!history) return;
-        stopPlay();
-        currentFrame = 0;
-        const total = history.length;
-        const interval = parseInt(speed.value);
+    function playHistory(history) {
+      if (!history || history.length === 0) return;
+      stopPlay();
+      currentFrame = 0;
+      const total = history.length - 1;
+      const interval = parseInt(document.getElementById('speed').value);
+      
+      setFrame(0);
+      currentFrame = 1;
+      
+      if (total >= 1) {
         playTimer = setInterval(() => {
           setFrame(currentFrame);
           currentFrame += 1;
           if (currentFrame > total) stopPlay();
         }, interval);
       }
+    }
 
-      function stopPlay() {
-        if (playTimer) {
-          clearInterval(playTimer);
-          playTimer = null;
-        }
+    function stopPlay() {
+      if (playTimer) {
+        clearInterval(playTimer);
+        playTimer = null;
       }
+    }
 
-      document.getElementById('playBtn').onclick = () => { if (graphData) playHistory(graphData.history); };
-      document.getElementById('pauseBtn').onclick = () => { stopPlay(); };
+    document.getElementById('playBtn').onclick = () => { if (graphData) playHistory(graphData.history); };
+    document.getElementById('pauseBtn').onclick = () => { stopPlay(); };
 
-      document.getElementById('generateBtn').onclick = async () => {
-        const params = {
-          graph_type: document.getElementById('graphType').value,
-          n: parseInt(document.getElementById('nNodes').value),
-          p: parseFloat(document.getElementById('wsP').value),
-          q: parseFloat(document.getElementById('probQ').value),
-          mode: document.getElementById('mode').value,
-          k: parseInt(document.getElementById('kHop').value),
-          attempt: document.getElementById('attemptMode').value
-        };
-        try {
-          const resp = await fetch('/api/generate', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(params) });
-          if (resp.ok) {
-            graphData = await resp.json();
-          } else {
-            await loadData();
-          }
-        } catch (e) {
-          await loadData();
+    // 1. Generate Base Graph purely
+    document.getElementById('generateBtn').onclick = async () => {
+      stopPlay();
+      const params = {
+        graph_type: document.getElementById('graphType').value,
+        n: parseInt(document.getElementById('nNodes').value),
+        m: parseInt(document.getElementById('baM').value),
+        p: parseFloat(document.getElementById('wsP').value),
+        k: parseInt(document.getElementById('wsK').value),
+        mode: document.getElementById('mode').value,
+        q: parseFloat(document.getElementById('probQ').value)
+      };
+      
+      try {
+        const resp = await fetch('/api/generate', { 
+          method: 'POST', 
+          headers: {'Content-Type':'application/json'}, 
+          body: JSON.stringify(params) 
+        });
+        if (resp.ok) {
+          graphData = await resp.json();
+          // Do not run propagation immediately, just load nodes/edges
+          selectedVictim = null;
+          selectedOrigin = null;
+          document.getElementById('metricVictim').textContent = '-';
+          document.getElementById('metricOrigin').textContent = '-';
+          
+          initNetwork(graphData.nodes, graphData.edges);
+          drawTimeline([]); // clear timeline
+          
+          document.getElementById('metricTau').textContent = '0';
+          document.getElementById('metricF').textContent = '0.000';
+          document.getElementById('metricCount').textContent = '0';
+          document.getElementById('metricFrame').textContent = '0';
         }
+      } catch (e) {
+        console.error(e);
+      }
+    };
 
-        // set metrics
-        document.getElementById('metricVictim').textContent = String(graphData.meta.victim || '-');
-        document.getElementById('metricOrigin').textContent = String(graphData.meta.origin || '-');
+    // 2. Run Propagation on the visually customized graph
+    document.getElementById('runBtn').onclick = async () => {
+      stopPlay();
+      
+      if (!nodesData || !edgesData) return;
+      
+      // Get exact custom nodes and edges from canvas
+      const currentNodes = nodesData.get().map(n => ({id: n.id, label: n.label}));
+      const currentEdges = edgesData.get().map(e => ({from: e.from, to: e.to}));
 
-        drawNetwork(graphData.nodes, graphData.edges);
-        drawTimeline(graphData.history);
-        // compute simple metrics: final reached and tau
-        const finalSet = graphData.history.length ? graphData.history.reduce((a,b)=>a.concat(b), []) : [];
-        const unique = new Set(finalSet);
-        document.getElementById('metricF').textContent = (unique.size / (graphData.nodes.length>0?graphData.nodes.length:1)).toFixed(3);
-        document.getElementById('metricTau').textContent = (graphData.history.length-1).toString();
-        document.getElementById('metricCount').textContent = unique.size.toString();
-        document.getElementById('metricFrame').textContent = '0';
-        // reset selection
-        selectedVictim = graphData.meta.victim || null;
-        selectedOrigin = graphData.meta.origin || null;
-        highlightSelection();
+      const params = {
+        custom_nodes: currentNodes,
+        custom_edges: currentEdges,
+        mode: document.getElementById('mode').value,
+        q: parseFloat(document.getElementById('probQ').value),
+        k: parseInt(document.getElementById('kHop').value),
+        victim: selectedVictim,
+        origin: selectedOrigin
       };
-
-      document.getElementById('runBtn').onclick = async () => {
-        // run using current UI params (same as generate but keep current selection)
-        await document.getElementById('generateBtn').click();
-      };
-
-      // bootstrap
-      (async () => { await loadData(); document.getElementById('generateBtn').click(); })();
-          const resp = await fetch('/api/generate', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(params) });
-          if (resp.ok) {
-            graphData = await resp.json();
+      
+      try {
+        const resp = await fetch('/api/generate', { 
+          method: 'POST', 
+          headers: {'Content-Type':'application/json'}, 
+          body: JSON.stringify(params) 
+        });
+        
+        if (resp.ok) {
+          graphData = await resp.json();
+          
+          selectedVictim = graphData.meta.victim !== undefined ? graphData.meta.victim : selectedVictim;
+          selectedOrigin = graphData.meta.origin !== undefined ? graphData.meta.origin : selectedOrigin;
+          document.getElementById('metricVictim').textContent = selectedVictim !== null ? String(selectedVictim) : '-';
+          document.getElementById('metricOrigin').textContent = selectedOrigin !== null ? String(selectedOrigin) : '-';
+          
+          // DO NOT redraw network nodes entirely, just re-highlight
+          highlightSelection();
+          drawTimeline(graphData.history);
+          
+          const finalSet = new Set();
+          if (graphData.history && graphData.history.length > 0) {
+            graphData.history.forEach(h => h.forEach(n => finalSet.add(n)));
+            document.getElementById('metricTau').textContent = String(graphData.history.length - 1);
           } else {
-            await loadData();
+            document.getElementById('metricTau').textContent = '0';
           }
-        } catch (e) {
-          await loadData();
+          
+          const reached = finalSet.size;
+          document.getElementById('metricF').textContent = (reached / Math.max(1, currentNodes.length)).toFixed(3);
+          
+          setTimeout(() => playHistory(graphData.history), 500);
         }
+      } catch (e) {
+        console.error(e);
+      }
+    };
 
-        drawNetwork(graphData.nodes, graphData.edges);
-        drawTimeline(graphData.history);
-        // compute simple metrics: final reached and tau
-        const finalSet = graphData.history.length ? graphData.history.reduce((a,b)=>a.concat(b), []) : [];
-        const unique = new Set(finalSet);
-        document.getElementById('metricF').textContent = (unique.size / (graphData.nodes.length>0?graphData.nodes.length:1)).toFixed(3);
-        document.getElementById('metricTau').textContent = (graphData.history.length-1).toString();
-        document.getElementById('metricCount').textContent = unique.size.toString();
-      };
-
-      document.getElementById('runBtn').onclick = async () => {
-        // placeholder: currently load existing prepared history
-        await loadData();
-        drawNetwork(graphData.nodes, graphData.edges);
-        drawTimeline(graphData.history);
-      };
-
-      // bootstrap
-      (async () => { await loadData(); document.getElementById('generateBtn').click(); })();
-    </script>
-
-  </body>
+    // Initialize application
+    (async () => { 
+      try {
+        await loadData(); 
+        if (graphData && graphData.nodes) {
+          initNetwork(graphData.nodes, graphData.edges);
+          drawTimeline(graphData.history);
+        } else {
+          document.getElementById('generateBtn').click(); 
+        }
+      } catch(e) {
+        document.getElementById('generateBtn').click(); 
+      }
+    })();
+  </script>
+</body>
 </html>

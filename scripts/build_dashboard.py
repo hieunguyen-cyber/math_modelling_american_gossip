@@ -2,6 +2,10 @@
 
 This script will later compile data outputs into `web/reports` and embed plots.
 """
+import sys
+import os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 import os
 import json
 import shutil

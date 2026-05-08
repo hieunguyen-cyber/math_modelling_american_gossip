@@ -17,18 +17,17 @@ class GossipPropagationEngine:
         self.history: List[Set[int]] = []
         self.timesteps: int = 0
 
-    def run(self, victim: int, originator: int, max_steps: Optional[int] = None) -> Dict:
-        """Run constrained BFS from originator limited to neighbors of victim.
-
-        Returns a result dict containing history, reached set and timesteps.
-        """
-        # Induced subgraph among neighbors of victim
+    def run(self, victim: int, originator: int, max_steps: Optional[int] = None, constrain_to_neighbors: bool = True) -> Dict:
+        """Run BFS from originator. If constrain_to_neighbors is True, limits to neighbors of victim."""
         neighbors = set(self.G.neighbors(victim))
-        if originator not in neighbors:
-            # if originator is not in neighborhood, cannot start propagation
-            return {"history": [], "reached": set(), "timesteps": 0}
+        
+        if constrain_to_neighbors:
+            sub_nodes = set(neighbors) | {victim}
+        else:
+            sub_nodes = set(self.G.nodes())
 
-        sub_nodes = neighbors
+        if originator not in sub_nodes:
+            return {"history": [], "reached": set(), "timesteps": 0}
         visited: Set[int] = set()
         q = deque()
         q.append(originator)
@@ -53,7 +52,9 @@ class GossipPropagationEngine:
             if next_frontier:
                 self.history.append(set(next_frontier))
         self.timesteps = len(self.history) - 1 if len(self.history) > 0 else 0
-        return {"history": self.history, "reached": visited, "timesteps": self.timesteps}
+        # compute reached friends (exclude victim from reached friends)
+        reached_friends = set(visited) & set(self.G.neighbors(victim))
+        return {"history": self.history, "reached": reached_friends, "timesteps": self.timesteps}
 
     def replay(self) -> List[Set[int]]:
         """Return a copy of the propagation history (frontiers per timestep)."""

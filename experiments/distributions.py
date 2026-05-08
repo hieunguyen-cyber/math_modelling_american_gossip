@@ -1,4 +1,7 @@
 """Collect distribution of spreading times and fit to exponential."""
+import sys
+import os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from typing import Optional, List
 import argparse
 import os

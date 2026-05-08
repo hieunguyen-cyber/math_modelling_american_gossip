@@ -1,4 +1,7 @@
 """Generate publication-quality figures used by experiments."""
+import sys
+import os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from visualization.static_plots import plot_spread_vs_degree
 import matplotlib.pyplot as plt
 

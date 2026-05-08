@@ -3,6 +3,9 @@
 This script is a high-level orchestrator. Detailed reproduction code
 should follow the paper; this file runs baseline experiments.
 """
+import sys
+import os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from typing import Optional
 import argparse
 import random

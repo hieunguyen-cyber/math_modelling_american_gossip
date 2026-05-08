@@ -3,7 +3,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 def plot_spread_vs_degree(degrees: Sequence[int], spreads: Sequence[float], outpath: str | None = None):
-    plt.style.use('seaborn-darkgrid')
+    try:
+        plt.style.use('seaborn-v0_8-darkgrid')
+    except OSError:
+        plt.style.use('ggplot')
     fig, ax = plt.subplots(figsize=(6,4))
     ax.scatter(degrees, spreads, s=20, alpha=0.7)
     ax.set_xlabel('Degree k')
