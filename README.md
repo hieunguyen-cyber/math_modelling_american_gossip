@@ -35,15 +35,35 @@ bash scripts/run_all.sh
 
 3. To run only experiments or build assets, use the other shell wrappers in `scripts/`.
 
-Development server
-------------------
-To run the live API used by the dashboard (for interactive generation and replay):
+Development server (Interactive Dashboard)
+----------------------------------------
+To run the live API used by the dashboard (for interactive generation, graph customization, and gossip animation):
 
 ```bash
 python scripts/server.py
 ```
 
-Then open `web/index.html` (dev copy) or `outputs/dashboard/index.html` (built copy) in a browser.
+Then open your browser and navigate to **http://127.0.0.1:5000/**
+
+**Dashboard Features:**
+- Generate base graphs using custom topological parameters ($N$, $m$, $p$, $k$).
+- Visually customize the graph layout (add/delete nodes and edges manually) right on the canvas.
+- Run multi-mode propagation (Local, Probabilistic, k-Hop) to trace timeline dynamics.
+- Animate the exact spread path from origin to final reach.
+
+Generating Scientific Figures
+-----------------------------
+To run the simulations and generate publication-quality figures:
+
+```bash
+python experiments/scaling_laws.py
+python scripts/generate_figures.py
+```
+
+The script will automatically compute and output to `outputs/figures/`:
+1. **Degree Distributions** ($P(k)$ vs $k$) for BA, ER, WS, and Apollonian networks on log-log scales.
+2. **Probability Sweeps** ($f$ and $\tau$ vs $q$) for Probabilistic Gossip mechanics.
+3. **Scaling Laws** ($\tau$ vs $k$) fitted with logarithmic models.
 
 Project layout
 --------------
