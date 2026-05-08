@@ -54,8 +54,11 @@ def run_fit(n: int = 2000, samples: int = 400):
     popt, pcov = curve_fit(log_model, x, y, p0=[1.0, 1.0])
     A, B = popt
 
+    from visualization.static_plots import plot_tau_vs_k_hexbin
     out_dir = 'outputs/figures'
     os.makedirs(out_dir, exist_ok=True)
+    
+    # 1. Plot normal scatter with log fit
     fig, ax = plt.subplots(figsize=(6,4))
     ax.scatter(x, y, s=20, alpha=0.7, label='data')
     xs = np.linspace(x.min(), x.max(), 200)
@@ -67,7 +70,14 @@ def run_fit(n: int = 2000, samples: int = 400):
     fig.tight_layout()
     out_file = os.path.join(out_dir, 'tau_vs_k_fit.png')
     fig.savefig(out_file, dpi=300)
+    plt.close(fig)
     print('Saved', out_file)
+    
+    # 2. Plot hexbin density plot
+    out_hexbin = os.path.join(out_dir, 'tau_vs_k_hexbin.png')
+    fig2 = plot_tau_vs_k_hexbin(ks, taus, title="Spreading Time vs Degree Density (BA Network)", outpath=out_hexbin)
+    plt.close(fig2)
+    print('Saved', out_hexbin)
 
 
 if __name__ == '__main__':
