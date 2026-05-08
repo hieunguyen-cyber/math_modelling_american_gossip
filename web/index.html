@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Gossip Propagation Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+      // UI bindings
+      const nNodes = document.getElementById('nNodes');
+      const nNodesVal = document.getElementById('nNodesVal');
+      const probQ = document.getElementById('probQ');
+      const probQVal = document.getElementById('probQVal');
+      const wsP = document.getElementById('wsP');
+      const wsPVal = document.getElementById('wsPVal');
+      const speed = document.getElementById('speed');
+      const speedVal = document.getElementById('speedVal');
+      const nodeSize = document.getElementById('nodeSize');
+
+      nNodes.oninput = () => nNodesVal.textContent = nNodes.value;
+      probQ.oninput = () => probQVal.textContent = parseFloat(probQ.value).toFixed(2);
+      wsP.oninput = () => wsPVal.textContent = parseFloat(wsP.value).toFixed(2);
+      speed.oninput = () => speedVal.textContent = speed.value + 'ms';
+
+      let graphData = null;
+      async function loadData() {
+        try {
+          graphData = await fetch('assets/data.json').then(r => r.json());
+        } catch (e) {
+          console.warn('No data.json available, using demo dataset');
+          graphData = {
+            meta: {graph_type: 'demo'},
+            nodes: Array.from({length:50}).map((_,i)=>({id:i,label:String(i)})),
+            edges: Array.from({length:49}).map((_,i)=>({from:i,to:i+1})),
+            history: [[1],[2]]
+          };
+        }
+      }
+
+      // initialize vis network
+      let network = null;
+      let nodesData = null;
+      let edgesData = null;
+      let selectedVictim = null;
+      let selectedOrigin = null;
+
+      function drawNetwork(nodes, edges) {
+        const container = document.getElementById('network');
+        nodesData = new vis.DataSet(nodes.map(n => ({id: n.id, label: n.label, color: {background: '#94a3b8'}, value: parseInt(nodeSize.value)})));
+        edgesData = new vis.DataSet(edges.map(e => ({from: e.from, to: e.to, color: '#cbd5e1'})));
+        const data = { nodes: nodesData, edges: edgesData };
+        const options = {
+          nodes: { shape: 'dot', scaling: { min:4, max:30 }, font: { size: 12 } },
+          edges: { color: {inherit:false}, smooth: {type:'continuous'} },
+          physics: { barnesHut: {gravitationalConstant: -20000}, stabilization: {iterations: 250} },
+          interaction: { hover: true, multiselect: false }
+        };
+        if (!network) {
+          network = new vis.Network(container, data, options);
+          network.on('click', params => {
+            if (params.nodes && params.nodes.length>0) {
+              const nodeId = params.nodes[0];
+              // set as victim if shift held, otherwise origin
+              if (params.event && params.event.srcEvent && params.event.srcEvent.shiftKey) {
+                selectedVictim = nodeId;
+                document.getElementById('metricVictim').textContent = String(nodeId);
+              } else {
+                selectedOrigin = nodeId;
+                document.getElementById('metricOrigin').textContent = String(nodeId);
+              }
+              // highlight selection
+              highlightSelection();
+            }
+          });
+        } else {
+          network.setData(data);
+        }
+      }
+
+      function highlightSelection() {
+        if (!nodesData) return;
+        const all = nodesData.get();
+        all.forEach(n => {
+          const bg = (n.id === selectedVictim) ? '#0ea5a4' : (n.id === selectedOrigin ? '#ef4444' : '#94a3b8');
+          nodesData.update({id: n.id, color: {background: bg}});
+        });
+      }
+
+      // draw timeline using Plotly
+      function drawTimeline(history) {
+        const counts = history.map(h => h.length);
+        const x = counts.map((_,i)=>i);
+        const trace = { x: x, y: counts, type: 'scatter', mode: 'lines+markers', marker:{color:'#0ea5a4'} };
+        Plotly.newPlot('timeline', [trace], {title:'Infected per timestep', margin:{t:30}});
+      }
+
+      // animation controls
+      let playTimer = null;
+      let currentFrame = 0;
+
+      function setFrame(t) {
+        if (!graphData || !nodesData) return;
+        const frame = graphData.history[Math.min(t, graphData.history.length-1)] || [];
+        const infected = new Set(frame);
+        nodesData.forEach(n => {
+          const isInf = infected.has(n.id);
+          const color = isInf ? '#ef4444' : (n.id===selectedVictim? '#0ea5a4' : '#94a3b8');
+          const size = isInf ? Math.min(30, parseInt(nodeSize.value)*2) : parseInt(nodeSize.value);
+          nodesData.update({id: n.id, color: {background: color}, value: size});
+        });
+        document.getElementById('metricCount').textContent = String(frame.length);
+        document.getElementById('metricFrame').textContent = String(t);
+      }
+
+      function playHistory(history) {
+        if (!history) return;
+        stopPlay();
+        currentFrame = 0;
+        const total = history.length;
+        const interval = parseInt(speed.value);
+        playTimer = setInterval(() => {
+          setFrame(currentFrame);
+          currentFrame += 1;
+          if (currentFrame > total) stopPlay();
+        }, interval);
+      }
+
+      function stopPlay() {
+        if (playTimer) {
+          clearInterval(playTimer);
+          playTimer = null;
+        }
+      }
+
+      document.getElementById('playBtn').onclick = () => { if (graphData) playHistory(graphData.history); };
+      document.getElementById('pauseBtn').onclick = () => { stopPlay(); };
+
+      document.getElementById('generateBtn').onclick = async () => {
+        const params = {
+          graph_type: document.getElementById('graphType').value,
+          n: parseInt(document.getElementById('nNodes').value),
+          p: parseFloat(document.getElementById('wsP').value),
+          q: parseFloat(document.getElementById('probQ').value),
+          mode: document.getElementById('mode').value,
+          k: parseInt(document.getElementById('kHop').value),
+          attempt: document.getElementById('attemptMode').value
+        };
+        try {
+          const resp = await fetch('/api/generate', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(params) });
+          if (resp.ok) {
+            graphData = await resp.json();
+          } else {
+            await loadData();
+          }
+        } catch (e) {
+          await loadData();
+        }
+
+        // set metrics
+        document.getElementById('metricVictim').textContent = String(graphData.meta.victim || '-');
+        document.getElementById('metricOrigin').textContent = String(graphData.meta.origin || '-');
+
+        drawNetwork(graphData.nodes, graphData.edges);
+        drawTimeline(graphData.history);
+        // compute simple metrics: final reached and tau
+        const finalSet = graphData.history.length ? graphData.history.reduce((a,b)=>a.concat(b), []) : [];
+        const unique = new Set(finalSet);
+        document.getElementById('metricF').textContent = (unique.size / (graphData.nodes.length>0?graphData.nodes.length:1)).toFixed(3);
+        document.getElementById('metricTau').textContent = (graphData.history.length-1).toString();
+        document.getElementById('metricCount').textContent = unique.size.toString();
+        document.getElementById('metricFrame').textContent = '0';
+        // reset selection
+        selectedVictim = graphData.meta.victim || null;
+        selectedOrigin = graphData.meta.origin || null;
+        highlightSelection();
+      };
+
+      document.getElementById('runBtn').onclick = async () => {
+        // run using current UI params (same as generate but keep current selection)
+        await document.getElementById('generateBtn').click();
+      };
+
+      // bootstrap
+      (async () => { await loadData(); document.getElementById('generateBtn').click(); })();
+          const resp = await fetch('/api/generate', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(params) });
+          if (resp.ok) {
+            graphData = await resp.json();
+          } else {
+            await loadData();
+          }
+        } catch (e) {
+          await loadData();
+        }
+
+        drawNetwork(graphData.nodes, graphData.edges);
+        drawTimeline(graphData.history);
+        // compute simple metrics: final reached and tau
+        const finalSet = graphData.history.length ? graphData.history.reduce((a,b)=>a.concat(b), []) : [];
+        const unique = new Set(finalSet);
+        document.getElementById('metricF').textContent = (unique.size / (graphData.nodes.length>0?graphData.nodes.length:1)).toFixed(3);
+        document.getElementById('metricTau').textContent = (graphData.history.length-1).toString();
+        document.getElementById('metricCount').textContent = unique.size.toString();
+      };
+
+      document.getElementById('runBtn').onclick = async () => {
+        // placeholder: currently load existing prepared history
+        await loadData();
+        drawNetwork(graphData.nodes, graphData.edges);
+        drawTimeline(graphData.history);
+      };
+
+      // bootstrap
+      (async () => { await loadData(); document.getElementById('generateBtn').click(); })();
+    </script>
+
+  </body>
+</html>

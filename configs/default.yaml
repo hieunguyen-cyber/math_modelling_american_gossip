@@ -1,0 +1,12 @@
+# Default configuration for experiments
+seed: 42
+n_nodes: 2000
+ba_m: 3
+ws_k: 6
+ws_p: 0.1
+er_p: 0.01
+apollonian_target: 1000
+prob_q: 1.0
+propagation_mode: local
+repetitions: 10
+output_dir: outputs
