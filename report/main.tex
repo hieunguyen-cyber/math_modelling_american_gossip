@@ -7,16 +7,12 @@
 \doctype{Research Report --- Mathematical Modelling}
 \title{Gossip Propagation in Social Networks: A Computational Reproduction and Analysis of Spreading Dynamics}
 
-\author[a,1]{Hieu Nguyen\thanks{\href{mailto:hieu@research.org}{hieu@research.org}}}
-\affil[a]{Faculty of Mathematics and Computer Science}
-
 \dates{Compiled on \today}
 \docinfo{Reproduction study of Lind et al.\ (EPL 2007) and Lind et al.\ (PRE 2007). All simulations were performed using Python~3.12 with NetworkX and joblib. Source code is available in the accompanying repository.}
 
 \footinfo{Gossip Propagation Study}
 \theday{\today}
 \organization{Mathematical Modelling Project}
-\leadauthor{H. Nguyen}
 
 \begin{abstract}
 Gossip is a targeted form of social information that spreads exclusively within the friendship neighbourhood of a particular individual---the victim. Unlike generic rumours or epidemic models, gossip dynamics are constrained topologically, making them sensitive to the local structure of the underlying social network. This report provides a comprehensive computational reproduction of the key findings in two foundational papers: \textit{The spread of gossip in American schools} (EPL, 2007) and \textit{Spreading gossip in social networks} (Physical Review E, 2007), both by Lind, da Silva, Andrade, and Herrmann. We implement a deterministic burning-algorithm propagation engine constrained to victim neighbourhoods, together with a probabilistic extension supporting both one-shot and repeated-attempt spreading regimes. Simulations are performed on Barab\'asi--Albert (BA) scale-free networks, deterministic Apollonian networks (APL), Watts--Strogatz small-world networks, and Erd\H{o}s--R\'enyi random graphs. We confirm the existence of an optimal connectivity $k_0$ minimising the spread factor $f$, validate the logarithmic scaling law $\tau = A + B\ln k$ for spreading time, reproduce the exponential decay of the distribution $P(\tau) \propto e^{\tau(1-\gamma)/B}$, and extend the analysis to probabilistic and global spreading regimes. Our implementation is modular, parallelised with \texttt{joblib}, and produces publication-quality figures that closely match those of the original papers.
