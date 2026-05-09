@@ -1,35 +1,77 @@
-"""Experiment driver to reproduce key figures from EPL 2007.
-
-This script is a high-level orchestrator. Detailed reproduction code
-should follow the paper; this file runs baseline experiments.
-"""
 import sys
 import os
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from typing import Optional
+import json
 import argparse
 import random
-import networkx as nx
 import numpy as np
-from graphs import generate_ba, generate_ws, generate_er, generate_apollonian
-from propagation import GossipPropagationEngine, ProbabilisticGossip
-from propagation.metrics import spread_factor, spreading_time
 
-def run_basic(n=1000, seed: Optional[int]=42):
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+from graphs import generate_ba, generate_apollonian
+from propagation import GossipPropagationEngine
+from experiments.runner import parallel_sweep_graph, aggregate_by_degree
+
+def reproduce_epl(n=1000, max_pairs=10000, seed=42):
     random.seed(seed)
     np.random.seed(seed)
-    G = generate_ba(n, m=3, seed=seed)
-    victim = 0
-    origin = list(G.neighbors(victim))[0]
-    engine = GossipPropagationEngine(G)
-    res = engine.run(victim, origin)
-    f = spread_factor(res['reached'], G.degree(victim))
-    tau = spreading_time(res['history'])
-    print(f"BA f={f:.3f} tau={tau}")
+    
+    os.makedirs('outputs', exist_ok=True)
+    results_summary = {}
+
+    print("Running BA networks...")
+    for m in [3, 5, 7]:
+        print(f"  Generating BA(n={n}, m={m})")
+        G_ba = generate_ba(n, m=m, seed=seed)
+        
+        print(f"  Sweeping BA m={m}")
+        # constrain_to_neighbors=True is default for GossipPropagationEngine
+        raw_res = parallel_sweep_graph(
+            G=G_ba,
+            engine_class=GossipPropagationEngine,
+            max_pairs=max_pairs,
+            n_jobs=-1
+        )
+        
+        agg = aggregate_by_degree(raw_res)
+        results_summary[f'ba_m{m}'] = {
+            'k': list(agg.keys()),
+            'f': [agg[k]['f'] for k in agg.keys()],
+            'tau': [agg[k]['tau'] for k in agg.keys()],
+            'raw_tau': [r['timesteps'] for r in raw_res], # for P(tau)
+            'raw_f': [r['reached_friends_count']/max(1, r['victim_degree']) for r in raw_res]
+        }
+
+    print("Running Apollonian network...")
+    # generation 6 is 3284 nodes
+    gen = 6 if n > 3000 else 5
+    G_apl = generate_apollonian(generations=gen, seed=seed)
+    print(f"  Generated APL(generations={gen}), N={G_apl.number_of_nodes()}")
+    
+    raw_res_apl = parallel_sweep_graph(
+        G=G_apl,
+        engine_class=GossipPropagationEngine,
+        max_pairs=max_pairs,
+        n_jobs=-1
+    )
+    agg_apl = aggregate_by_degree(raw_res_apl)
+    results_summary[f'apl_gen{gen}'] = {
+        'k': list(agg_apl.keys()),
+        'f': [agg_apl[k]['f'] for k in agg_apl.keys()],
+        'tau': [agg_apl[k]['tau'] for k in agg_apl.keys()],
+        'raw_tau': [r['timesteps'] for r in raw_res_apl],
+        'raw_f': [r['reached_friends_count']/max(1, r['victim_degree']) for r in raw_res_apl]
+    }
+
+    out_file = 'outputs/epl_results.json'
+    with open(out_file, 'w') as f:
+        json.dump(results_summary, f)
+    print(f"Saved results to {out_file}")
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--n', type=int, default=1000)
+    parser.add_argument('--max-pairs', type=int, default=50000)
     parser.add_argument('--seed', type=int, default=42)
     args = parser.parse_args()
-    run_basic(args.n, args.seed)
+    
+    reproduce_epl(args.n, args.max_pairs, args.seed)

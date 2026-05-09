@@ -1,0 +1,1292 @@
+Spreading gossip in social networks
+Pedro G. Lind, 1,2 Luciano R. da Silva, 3 José S. Andrade, Jr., 4 and Hans J. Herrmann 4,5
+1Institute for Computational Physics, Universität Stuttgart, Pfaffenwaldring 27, D-70569 Stuttgart, Germany
+2Centro de Física Teórica e Computacional, Avenida Professor Gama Pinto 2, 1649-003 Lisbon, Portugal
+3Departamento de Física Teórica e Experimental, Universidade Federal do Rio Grande do Norte, Campus Universitário,
+59072-970 Natal-RN, Brazil
+4Departamento de Física, Universidade Federal do Ceará, 60451-970 Fortaleza, Brazil
+5Computational Physics, IfB, HIF E12, ETH Hönggerberg, CH-8093 Zürich, Switzerland
+/H20849Received 22 May 2007; published 27 September 2007 /H20850
+We study a simple model of information propagation in social networks, where two quantities are intro-
+duced: the spread factor, which measures the average maximal reachability of the neighbors of a given node
+that interchange information among each other, and the spreading time needed for the information to reach
+such a fraction of nodes. When the information refers to a particular node at which both quantities are
+measured, the model can be taken as a model for gossip propagation. In this context, we apply the model to real
+empirical networks of social acquaintances and compare the underlying spreading dynamics with different
+types of scale-free and small-world networks. We ﬁnd that the number of friendship connections strongly
+inﬂuences the probability of being gossiped. Finally, we discuss how the spread factor is able to be applied to
+other situations.
+DOI: 10.1103/PhysRevE.76.036117 PACS number/H20849s/H20850: 89.75.Hc, 89.65.Ef, 87.23.Ge
+I. INTRODUCTION AND MODEL
+In everyday life probably everyone has already experi-
+enced the annoying situation of telling some personal secret
+to some friend and ending with a naive “please, do not tell
+that to anyone, OK?” and after a short time all our friends
+suddenly know the secret. What happened? Is this common
+phenomenon a consequence of a natural instinct that friends
+have to conspire and slander against each other? Or is this a
+phenomenon which can hardly be avoid by human trust and
+respect being closely related to the net of acquaintances that
+people naturally tend to form?
+Such kinds of questions can be easily addressed by repre-
+senting the social system, composed by individuals and the
+interactions among them, as a network—i.e., as a collection
+of nodes and links. While networks have been widely used
+by physicists to study, e.g., porous media /H208511/H20852or a system of
+interacting spins /H208512–4/H20852, they can also be used to study social
+systems. Social networks have helped to further understand
+the structure and evolution of social systems, where people
+and their acquaintances are represented by the nodes and
+links of the network, respectively. In particular, propagation
+of information in social systems is easily reproduced in such
+networks and has been addressed in recent physical literature
+/H208515–7/H20852due to its importance in epidemiology /H208518/H20852, where in-
+formation is related to the contagious of diseases, to under-
+stand social inﬂuence, beliefs, and extremism /H208519–12/H20852,t ou n -
+derstand the evolution of ﬁnancial markets /H2085113/H20852, and to study
+econophysical networks underlying, e.g., electrical supply
+systems or road webs among airports or cities. Here we put
+emphasis on how far the information can spread when par-
+ticular constraints, of interest for social systems, are taken
+into account.
+The way information spreads over the network depends
+on its content. A rumor or an opinion concerning some topic
+which is not directly connected to the social network struc-
+ture /H20849political opinion, etc. /H20850can be of interest to any of the
+neighbors of a certain node, regardless of their topological
+features. However, as opposed to rumors, gossip always tar-
+gets the details about the behavior or private life of a speciﬁc
+person—i.e., of a speciﬁc node. This node will be called
+henceforth the target node or the victim. Therefore, due to
+this particular content, it is reasonable to assume as a ﬁrst
+approach that the information spreads only over people di-
+rectly connected to the victim.
+A simple model recently introduced /H2085114/H20852for such kind of
+information spreading is described as follows. Selecting ran-
+domly a victim, the gossip about him or her is created at time
+t=0 by an originator which shares a bond with the victim. At
+t=1 the originator only spreads the gossip to other nodes,
+which are connected to herself and the victim. The spread
+continues until all reachable acquaintances of the victim
+know it, as illustrated by the squares connected by dashed
+lines in Fig. 1 for a real friendship network /H2085115/H20852. Our dynam-
+ics is therefore like a burning algorithm /H2085116/H20852, starting at the
+originator but limited to sites that are neighbors of the
+victim.
+To measure how effectively the gossip—or, in general, the
+information—attains the acquaintances of the victim, we de-
+ﬁne the spreading factor as f = n
+f / k, where nf is the total
+number of people who eventually hear the gossip and k is the
+degree of the victim. It is interesting to notice that the quan-
+tity f as deﬁned here is analogous to the idea of “reachabil-
+ity” previously introduced by Rapoport /H2085117/H20852. In our work,
+not only global reachability will be addressed but also local
+reachability—i.e., when the information spreads only among
+the neighbors of a particular target, which corresponds to the
+particular requirements to study gossip propagation. In addi-
+tion, we also deﬁne the spreading time
+/H9270which deﬁnes the
+minimum time it takes to reach this fraction f of acquaintan-
+ces, giving a measure of how far these connected acquain-
+tances are from each other. Similarly to what is done for the
+clustering coefﬁcient spectrum, for nodes of degree k our f is
+PHYSICAL REVIEW E 76, 036117 /H208492007/H20850
+1539-3755/2007/76/H208493/H20850/036117/H2084910/H20850 ©2007 The American Physical Society036117-1
+an average of averages. However, it is important to note that
+f and the standard deﬁnition of the clustering coefﬁcient C
+/H2085118,19/H20852are different quantities, since the latter only measures
+the number of bonds between neighbors and contains no in-
+formation about how such bonds distribute among the vic-
+tim’s acquaintances.
+We start in Sec. II by studying how such kind of informa-
+tion spreads in different networks—namely, in scale-free and
+small-world networks. Some analytical considerations will
+be presented for the particular case of the Apollonian net-
+work /H208511/H20852. The results of such artiﬁcial networks are also
+compared to the ones obtained with an empirical network of
+social contacts recently obtained from a U.S. School survey
+/H2085115/H20852, where friendship acquaintances were rigorously deﬁned
+/H2085115,20/H20852. There are also situations where the information
+about the target node can be of interest beyond the ﬁrst
+neighbors, like the case where the victim is a movie star,
+yielding a scenario similar to the one of usual rumor propa-
+gation or even epidemic spreading /H2085121/H20852. These cases will be
+considered in Sec. III. Since the tendency for spreading in-
+formation does not always imply that its transmission will be
+certain, we introduce in Sec. IV a probability for each node
+to spread the information and study the main effects on the
+spreading dynamics. A discussion and conclusions are given
+in Sec. V .
+II. SPREADING INFORMATION OVER FIRST
+NEIGHBORS
+We consider ﬁrst a Barabási-Albert /H20849BA/H20850scale-free net-
+work /H2085122/H20852: starting with a small number m of nodes fully
+connected to each other one adds iteratively one new node
+with m initial links attached to the nodes of the network with
+a probability proportional to the node degree.
+In Fig. 2/H20849a/H20850we show the average spreading time /H9270as a
+function of the degree k in a scale-free network with N
+=104 nodes and m=3, 5, and 7. In all cases, for large values
+of k, /H9270scales logarithmically with the degree
+/H9270= A + B ln k, /H208491/H20850
+where for this case A=−10.77 and B=2.433 deﬁnes the
+dashed line in Fig. 2/H20849a/H20850.
+For the same values of m we plot in Fig. 2/H20849b/H20850the depen-
+dence of the spread factor with the degree. Curiously, one
+sees an optimal degree k
+0 for which the spreading factor
+attains a minimum /H20849see inset /H20850. This optimal value lies typi-
+cally in the middle range of the degree spectrum, showing
+that the two extreme situations of having either few or many
+neighbors enhance the relative broadness of the information
+spreading. Further, a closer look shows that for small degrees
+the values of f coincide with f =1/ k /H20849dashed line/H20850while for
+larger degrees f deviates from 1/ k with a deviation which
+increases with m. Thus, while initially /H20849t=0 /H20850the spread fac-
+tor is always f =1/ k /H20849dashed line /H20850, for the subsequent time
+steps one observes that nodes with small degrees remain on
+average at f =1/ k while for large degrees the spread factor
+increases up to a maximal value.
+The dependence of the optimal value k
+0 on the two pa-
+rameters N and m is studied in Fig. 3. Here, we observe that
+the optimal degree k0 yields approximately
+k0 /H11008/H20849ln N/H20850a
+/H20849ln m/H20850b . /H208492/H20850
+The scale-free networks considered above are probabilis-
+tic. In other contexts, deterministic scale-free networks have
+/1
+/1
+/1
+/1
+ /1
+/1
+/1
+/1
+/1
+/1
+/1
+/1
+/1
+/1
+/1
+/1
+/1
+/1
+/1
+/1
+/1
+/1
+/1
+/1
+/1
+/1
+/1
+/1
+/1
+/1
+/1
+/1
+/1
+FIG. 1. /H20849Color online /H20850Spreading of information about a target
+node shown as the gray /H20849red/H20850open circle on part of a real school
+friendship network /H2085115/H20852. If the spreading starts from one of the
+white squared neighbors, no propagation occurs /H20849f =0 /H20850. If, instead,
+one of the gray /H20849yellow/H20850squared neighbors starts the spreading, in
+/H9270=3 time steps, ﬁve neighbors will know it, giving f =5/7. So the
+average yields f =25/49 which is the value of the spreading factor
+that characterizes the target node /H20849see text/H20850. The information spreads
+over the dashed /H20849blue/H20850lines. The information can be seen as gossip
+about the target node or the victim /H20849see text/H20850. Note that the cluster-
+ing coefﬁcient of the victim has a different value: namely, C
+=10/42.
+10 100 1000
+k
+1
+2
+3
+4
+5
+6
+7
+τ
+10 100 1000
+k
+0
+0.1
+0.2
+0.3
+f
+0.02
+0.04
+(a)
+(b)
+k0
+20 200
+FIG. 2. /H20849a/H20850Spreading time /H9270/H20849in iteration steps /H20850in a Barabási-
+Albert scale-free network and /H20849b/H20850the spreading factor f, both as a
+function of k /H20849in number of nodes /H20850: m=3 /H20849circles/H20850, m=5 /H20849squares/H20850,
+and m=7 /H20849triangles/H20850. The dashed line in /H20849b/H20850indicates f =1/ k. The
+inset in /H20849b/H20850is a close-up of the plot for m=5, emphasizing the
+optimal degree k0 which minimizes the gossip spreading /H20849see text/H20850.
+In all cases, N=104 nodes, averages over 500 realizations are con-
+sidered, and logarithmic binning in k is used.
+LIND et al. PHYSICAL REVIEW E 76, 036117 /H208492007/H20850
+036117-2
+been proposed /H208511,23/H20852as a way to construct perfect hierarchi-
+cal networks. One of such networks is the Apollonian net-
+work. The Apollonian network is constructed in a purely
+deterministic way /H208511,24/H20852as illustrated in Fig. 4/H20849a/H20850: one starts
+with three interconnected nodes, deﬁning a triangle; at n=0
+/H20849generation 0 /H20850, one inserts a new node at the center of the
+triangle and joins it to the three other nodes /H20851white circles in
+Fig. 4/H20849a/H20850/H20852, thus deﬁning three new smaller triangles; at itera-
+tion n=1, one adds at the center of each of these three tri-
+angles a new node /H20849squares/H20850, connected to the three vertices
+of the triangle, deﬁning nine new triangles, and then for gen-
+eration n=2 one node /H20849black circles/H20850at the center of each of
+these nine triangles and henceforth. The number of nodes
+and the number of connections are given, respectively, by
+N
+n = 1
+2 /H208493n+1 +5 /H20850and Ln = 3
+2 /H208493n+1 +1 /H20850. The distribution of con-
+nections obeys a power law, since the number of nodes with
+degree k=3,3 /H110032,3 /H1100322 ,...,3 /H110032n−1 ,3 /H110032n ,2 n+1 is equal
+to 3 n ,3 n−1 ,3 n−2 ,...,3 2 ,3,1,3, respectively. Thus one has
+P/H20849k/H20850/H11008k−/H9253with /H9253=ln 3/ln 2.
+One main difference from the BA network is that, for
+Apollonian networks, f =1 independently of k, due to the
+hierarchical structure shown in Fig. 4/H20849a/H20850. In Fig. 4/H20849b/H20850one
+observes the logarithmic behavior of /H9270similar to the BA
+case. In the Apollonian case the logarithmic behavior can
+even be derived analytically as follows. From Fig. 4/H20849a/H20850one
+sees that vertices belonging to the nth generation communi-
+cate with each other through n steps, thus
+/H9270/H11008n. Since the
+degree of the nth generation is given by /H208511/H20852k=3 /H110032n−1, one
+obtains the logarithmic dependence of /H9270shown in Fig. 4/H20849b/H20850,
+where the dashed line yields the expression in Eq. /H208491/H20850with
+A=−0.28 and B=1.1.
+Next, we show that the main results obtained for the
+scale-free networks above are also characteristic of real em-
+pirical social networks. For that, we study the model for
+information propagation on a real social network—namely,
+the one extracted from empirical data obtained in an exten-
+sive study done within the National Longitudinal Study of
+Adolescent Health /H20849AddHealth/H20850/H2085115/H20852at the Carolina Popula-
+tion Center. The data comprehend a survey done between
+1994 and 1995 in 84 American schools evaluating an in-
+school questionnaire to 90 118 students. The students are
+separated by the school they belong to, and therefore there
+are 84 networks with sizes ranging from /H11011100 to /H110112000
+students. The aim is to allow social network researchers in-
+terested in the general structural properties of friendship net-
+works to study the structural and topological properties of
+social networks /H2085125/H20852. In previous studies /H2085120,26/H20852, it has been
+shown that the main properties characterizing the underlying
+networks from these data can be easily reproduced with a
+mobile agent model.
+As shown in Fig. 5/H20849a/H20850, while for small k the spreading
+time grows linearly, for large k it follows a logarithmic law
+given by Eq. /H208491/H20850with A=−2.84 and B=1.98. Here, the loga-
+rithmic growth of
+/H9270with k follows the same dependence of
+the average degree knn of the nearest neighbors /H2085127/H20852, as illus-
+trated in the inset of Fig. 5/H20849a/H20850. Further, the nontrivial effect of
+having an optimal degree k0 is also observed in Fig. 5/H20849b/H20850. For
+these schools one obtains k0 /H110117 neighbors as an optimal
+value for which f /H110110.42, meaning that less than half of the
+ﬁrst neighbors are reached. In other words, with fewer
+friends /H20849k /H11021k
+0/H20850, the information is more able to reach a larger
+fraction of them. But contrary to intuition, the same occurs
+for the nodes having a larger number of friends.
+Interestingly, information spreads in the same way either
+through these empirical networks as on scale-free networks,
+although the corresponding topological and statistical fea-
+1.9 2 2.1 2.2 2.3 2.4
+ln(ln N)
+2.5
+3
+3.5
+4
+4.5
+5
+5.5
+ln k0
+0 0.2 0.4 0.6 0.8
+ln(ln m)
+3.6
+3.8
+4
+4.2
+4.4
+4.6
+ln k0
+(a) (b)
+FIG. 3. The optimal degree k0 in a BA network as a function /H20849a/H20850
+of N ﬁxing m=5 initial outgoing connections and /H20849b/H20850of m for N
+=104 nodes. The average degree is /H20855k/H20856=2 m. The dotted lines have
+slopes of a=4.64 and − b=−1.34 /H20851see Eq. /H208492/H20850/H20852.
+(a)
+10 100 1000
+k
+2
+4
+6
+8
+10
+12
+τ
+(b)
+FIG. 4. /H20849a/H20850Illustration of the ﬁrst three generations of an Apol-
+lonian network /H20849see text /H20850. /H20849b/H20850Spreading time /H9270/H20849in iteration steps /H20850
+for the spreading factor to attain the maximal value f =1 where the
+dashed line can be obtained analytically /H20849see text/H20850, yielding an ex-
+pression as in Eq. /H208491/H20850with A=−0.28 and B=1.1.
+SPREADING GOSSIP IN SOCIAL NETWORKS PHYSICAL REVIEW E 76, 036117 /H208492007/H20850
+036117-3
+tures are known to be quite distinct /H2085120,26/H20852. For instance, as
+shown in the inset of Fig. 5/H20849b/H20850, the degree distribution P/H20849k/H20850
+of the school networks is typically exponential and not a
+power law. Since the same optimal degree appears in BA
+networks, one argues that the existence of this optimal num-
+ber is not necessarily related to the degree distribution of the
+network, but rather to the degree correlations. However, the
+relation between degree correlations, measured by k
+nn, and
+the logarithmic behavior of the spreading time is not straight-
+forward. While in the empirical network we ﬁnd the same
+distribution for both k
+nn and /H9270, in BA and Appolonian net-
+works knn follows a power law with k. In the case of uncor-
+related networks, two- and three-point correlations reduce to
+simple expressions of the moments of the degree distribu-
+tion. Therefore, f is independent of the degree, similarly to
+what is observed for the density of particles as derived by
+Catanzaro et al. /H2085128/H20852in diffusion-annihilation processes on
+complex networks.
+To go further with the characterization of information
+spreading on networks, we next study the distributions P/H20849
+/H9270/H20850
+and P/H20849f/H20850. In Fig. 6/H20849a/H20850we see that for the Apollonian network
+the distribution P/H20849/H9270/H20850of the spreading time decays exponen-
+tially. This behavior can be understood if we consider that
+P/H20849/H9270/H20850d/H9270= P/H20849k/H20850dk and use Eq. /H208491/H20850together with the degree
+distribution P/H20849k/H20850/H11008k−/H9253to obtain
+P/H20849/H9270/H20850/H11008exp/H20851/H9270/H208491− /H9253/H20850/B/H20852, /H208493/H20850
+for large k. The slope in Fig. 6/H20849a/H20850is precisely
+/H208491− /H9253/H20850/ B=−0.17 using B=1.1 from Fig. 4/H20849b/H20850and /H9253=2.58
+from Ref. /H208511/H20852.
+For the school network P/H20849/H9270/H20850follows an exponential decay
+for large /H9270, as shown in Fig. 6/H20849b/H20850and has a maximum for
+small /H9270. For comparison, we also plot in Fig. 6/H20849b/H20850the distri-
+bution P/H20849/H9270/H20850for the BA network with m=9, which has a very
+similar shape, but is shifted to the right, due to the larger
+minimal number of connections. In both cases, the distribu-
+tion is well ﬁtted by an exponential. The reason for the si-
+miliarities between empirical networks and BA networks at
+the particular value m=9 may be related to the way the ques-
+tionnaire was made at the schools: each student should name
+their friends out of a maximal number of ten acquaintances.
+From the similarities we could now argue that in fact on
+average the students elected nine acquaintances each.
+Figure 6/H20849c/H20850shows the distribution P/H20849f/H20850for a scale-free
+BA network, while Fig. 6/H20849d/H20850shows the same distribution for
+the empirical networks. Before studying such distributions
+the following remarks should be taken into account. The
+spreading factor depends on the number k of neighbors and
+consequently depends also on the network size, since the
+larger the network, the larger the maximal number k
+max of
+neighbors a node may have. Further, the spread factor varies
+always between the minimal value 0 and the maximal value
+1, and for a given node with k neighbors the possible values
+11 0
+k
+1
+2
+3
+4
+5
+τ 10 20 30
+k
+0.0001
+0.001
+0.01
+0.1
+11 0
+k
+0.4
+0.5
+0.6
+0.8
+0.9
+1
+f11 0
+k
+6
+8
+10
+12
+14
+(a) (b)
+P(k)
+k0
+knn
+FIG. 5. Propagation of information on a real friendship network
+of American students /H2085115/H20852averaged over 84 schools. In /H20849a/H20850we show
+the spreading time /H9270/H20849in iteration steps /H20850as a function of degree k,
+plotting in the inset, the average degree knn of neighbors of nodes
+with degree k /H20849in number of nodes /H20850.I n /H20849b/H20850the spread factor f, both
+as a function of degree k, with the inset showing the degree distri-
+bution P/H20849k/H20850.
+24 6 81 0
+τ
+0.01
+0.1
+1
+P(t)
+24 6 81 0 1 2
+τ
+1e-05
+0.0001
+0.001
+0.01
+0.1
+1
+(a)
+(b)
+0 0.2 0.4 0.6 0.8 1
+f
+0
+0.02
+0.04
+0.06
+P(f)
+0.2 0.4 0.6 0.8 1
+f
+0
+0.02
+0.04
+0.06
+0.08
+0.1
+0.4 0.45 0.5 0.55 0.6
+f
+0
+0.005
+0.01
+0.015
+P(f)
+0 0.2 0.4 0.6 0.8 1
+f
+0
+0.01
+0.02
+0.03
+P(f)
+(c)
+(d)
+(e)
+FIG. 6. Distribution P/H20849/H9270/H20850of spreading times /H9270/H20849in iteration steps/H20850
+for /H20849a/H20850the Apollonian network of eight generations and /H20849b/H20850the real
+school network /H20849circles/H20850and the BA network with m=9 and N
+=1000 /H20849solid line/H20850. The dashed lines indicate the best ﬁt to the data
+for large /H9270values of Eq. /H208493/H20850, with parameters /H208491− /H9253/H20850/ B=−0.45 and
+−1.26 for the Apollonian network in /H20849a/H20850and the real school network
+in /H20849b/H20850, respectively. Below, the distributions of f are shown for /H20849c/H20850
+the BA network with the same parameter values /H20849inset magniﬁes the
+range f /H33528/H208510.4,0.6 /H20852/H20850, for /H20849d/H20850the schools, and for /H20849e/H20850an artiﬁcial
+distribution of all possible fractions f among the same number of
+nodes and neighbors. The highly positive skewness in P/H20849f/H20850of both
+BA and schools networks are in strong deviation with the artiﬁcial
+distribution, indicating a structure among the way neighbors con-
+nect with each other /H20849see text/H20850.
+LIND et al. PHYSICAL REVIEW E 76, 036117 /H208492007/H20850
+036117-4
+are f =0,1/ k,2/ k,..., /H20849k−1 /H20850/ k,1. Consequently, if for a spe-
+ciﬁc network all the possible f values appear with the same
+probability, one should expect the distribution P/H20849f/H20850to be
+symmetric around f =1/2 with discrete peaks at n/ k for n
+=0,1,..., k and k=1,..., kmax. This artiﬁcial distribution is
+shown in Fig. 6/H20849e/H20850, obtained from all possible fractions con-
+structed with all integers from N=1 to 1000.
+For BA networks, there is also a symmetry in the vicinity
+of f =1/2 /H20851Fig. 6/H20849a/H20850/H20852. However, different from a uniform dis-
+tribution, one ﬁnds a strong asymmetry between small and
+large values of f: the most pronounced peaks are observed
+for f /H113510.1. This same behavior is observed for the empirical
+school networks, as shown in Fig. 6/H20849d/H20850, which is also
+strongly asymmetric when compared with the corresponding
+uniform distribution of all possible values of f sketched in
+Fig. 6/H20849e/H20850. The positive skewnesses indicate a higher fre-
+quency of low f values than of larger ones, which indicates
+in fact that the neighbors of nodes tend to form small sepa-
+rated sets of linked neighbors. Consequently, one is able to
+address how the connections between neighbors are grouped
+only by measuring the spreading factor for the central node.
+For the distribution P/H20849f/H20850of the Apollonian network one trivi-
+ally ﬁnds P/H20849f/H20850=
+/H9254/H208491− f/H20850since the hierarchical structure of the
+network always yields f =1, as mentioned before.
+Social networks are usually small-world /H2085129/H20852; i.e., they
+are characterized by a high clustering coefﬁcient and a low
+average shortest path length. Since we are interested in social
+systems, we will next study the propagation of information
+on artiﬁcial small-world networks, constructed as follows
+/H2085129/H20852. One starts with a regular lattice where each node is
+attached to k
+0 neighbors symmetrically displaced. Such a
+regular network is characterized by a clustering coefﬁcient
+C
+0 and a shortest path length L0. In this regular network, all
+links are short range. Then, sweeping over all nodes one
+rewires with probability p each link to a randomly chosen
+node. By doing this there will be on average pk
+0N/2 long-
+range links.
+For p=0 the network is a regular structure where no long-
+range links exist, yielding a large average path length and
+clustering coefﬁcient. For p=1 all links are long range, pro-
+ducing a random graph structure where both average path
+length and clustering coefﬁcient are small. Increasing p from
+0 to 1, one ﬁrst observes the decrease of the shortest path
+length L, when compared to L
+0, and only for larger values of
+p the decrease of the clustering coefﬁcient C, as shown in
+Fig. 7/H20849a/H20850. Therefore, in the middle range between the de-
+crease of L and the decrease of C one obtains the small-
+world effect where L/ L0 is small and C/ C0 is large /H2085130/H20852.A s
+shown in Fig. 7/H20849a/H20850this range is approximately −2 /H11351log10 p
+/H11351−1. In Fig. 7/H20849a/H20850one also sees that both the spread factor f
+and the spreading time start to decrease at approximately the
+same value of p as the normalized clustering coefﬁcient
+C/ C
+0.
+Figure 7/H20849b/H20850illustrates the variation of the spread factor as
+a function of the degree in the particular case of a random
+network. Instead of the above procedure with p=1 ﬁxed,
+random networks can also be constructed by starting with N
+nodes and introducing with probability p
+/H11032one link between
+each pair of nodes. Typically, in random networks there is a
+threshold pc/H11032beyond which different structure and dynamical
+features appear. This is also the case for gossip propagation
+/H2085131/H20852. Figure 7/H20849b/H20850shows the behavior of f in random net-
+works for three illustrative values of p/H11032=0.02, 0.04, and
+0.08, while the inset shows the corresponding spreading
+time. Since in random networks the average degree increases
+with p
+/H11032, we choose to compute f and /H9270as functions of k*
+= /H20849k− kmin/H20850/ /H20849kmax − kmin/H20850in order to facilitate comparison. For
+p/H11032=0.02 and lower values both the spread factor and spread-
+ing time remain approximately constant, with f /H110111/ k and /H9270
+/H110111. Increasing the probability to p/H11032=0.04 increases the av-
+erage degree per node and also the spread factor beyond its
+initial value f =1/ k, and consequently the corresponding
+spreading time
+/H9270/H110221 increases with k. Increasing even fur-
+ther the probability to p/H11032=0.08 and beyond, more and more
+connections are introduced throughout the network, in par-
+ticular among the neighbors of each node, which enables
+more nearest neighbors to know about the gossip. Conse-
+quently, on average one obtains f
+max =1 independently of k.
+This maximal value for such values of p/H11032means that the
+spreading attains all the neighbors of the victim. Therefore
+one should expect that the time to reach complete spreading
+should decrease with k
+*, which is what one observes in the
+inset of Fig. 7/H20849b/H20850.
+As a preliminary conclusion of this section one can state
+that, although different in their structure, empirical social
+networks behave similarly to scale-free networks when sub-
+ject to propagation of information over the ﬁrst neighbor-
+hood of a particular target node.
+III. BEYOND THE FIRST NEIGHBORS
+In this section we will study how f and /H9270change when the
+information is able to propagate beyond ﬁrst neighbors. For
+-4 -3 -2 -1 0
+log10 p
+0
+0.5
+1
+1.5
+2
+2.5
+3
+C/C0
+f
+τ
+L/L0
+0 0.2 0.4 0.6 0.8 1
+k
+*
+0
+0.2
+0.4
+0.6
+0.8
+1
+f
+0 0.2 0.4 0.6 0.8 1
+k
+*
+0
+2
+4
+6
+8
+τ
+(a)
+(b)
+FIG. 7. /H20849a/H20850Propagation of information in small-world networks:
+spreading time /H9270/H20849in iteration steps /H20850, clustering coefﬁcient C/ C0,
+and spread factor f as a function of the logarithm of the rewiring
+probability p for the small-world lattice with N=104 sites. C0
+=1/2 is the clustering coefﬁcient of a regular lattice. In all cases we
+average over 100 conﬁgurations and k0 =4 /H20849see text /H20850. /H20849b/H20850Depen-
+dence of the spread factor f on k* = /H20849k− kmin/H20850/ /H20849kmax− kmin/H20850, for the
+random graph with N=103 sites and p/H11032=0.02 /H20849circles/H20850, 0.04
+/H20849squares/H20850, and 0.08 /H20849triangles/H20850. Inset: the spreading time /H9270of the
+random networks for the same parameter values.
+SPREADING GOSSIP IN SOCIAL NETWORKS PHYSICAL REVIEW E 76, 036117 /H208492007/H20850
+036117-5
+that, we consider two different regimes of information
+spreading. In the ﬁrst regime, it spreads among the ﬁrst and
+second neighbors of the victim, and in the second it spreads
+throughout the entire network. For the latter, there are two
+other quantities of interest that we introduce here. One is the
+total fraction F
+N of nodes who know and transmit the infor-
+mation, deﬁned as
+FN = Ng
+N , /H208494/H20850
+where Ng is the maximal number of nodes in the entire net-
+work which already know the information and N is the total
+number of nodes. Second, the maximal spreading time /H9270max is
+deﬁned as the number of time steps necessary to attain the
+fraction F
+N.
+Figure 8 shows the spreading dynamics in the American
+schools when it spreads among the two ﬁrst neighborhoods
+of the victim. The behavior is signiﬁcantly different from the
+one observed previously /H20849compare with Fig. 5/H20850. From Fig.
+8/H20849a/H20850one sees that the spreading time becomes independent of
+k for large values deviating from the logarithmic dependence
+observed previously.
+As for the spread factor f shown in Fig. 8/H20849b/H20850, one still
+observes an optimal value minimizing the spreading of the
+gossip, but this value is now much lower than the one found
+for propagation only among common neighbors of the origi-
+nator and the victim. Probably here, contrary to what hap-
+pens in the previous case, the optimal value vanishes when
+the network size or the number of connections increases.
+This conjecture will be reinforced next by studying artiﬁcial
+scale-free networks.
+As illustrated in Fig. 9 the same behavior observed for the
+schools is also observed for BA networks. Here, the results
+for three different BA networks are shown for m=3 /H20849circles/H20850,
+m=5 /H20849squares/H20850, and m=7 /H20849triangles/H20850. The spreading time
+/H9270
+attains also a constant value independent of k for large k
+values /H20851Fig. 9/H20849a/H20850/H20852. Obviously this plateau decreases with the
+minimal number m of connections and our simulations show
+that the dependence on m is approximately logarithmic for
+small values of k. This decrease happens because increasing
+m increases the number of links per node, enabling a faster
+propagation. Moreover, the maximal value to which /H9270con-
+verges for large k can be explained as follows: since now the
+information spreads over ﬁrst and second neighbors, if the
+network has poor k correlations, for sufﬁciently large k, all
+values of k start to be present within the two ﬁrst neighbor-
+hoods, yielding an independence of
+/H9270of k. The distribution
+of the spreading time presents also an approximately expo-
+nential tail with a slope that increases with m.
+As for the spread factor f, the optimal value k
+0 is ob-
+served only for small m /H20849m=3 /H20850and rapidly vanishes when m
+is increased. In fact, for large values of m one ﬁnds large
+values of f decreasing with k as f /H110081/ k. This occurs inde-
+pendently of m. Due to the large values of f, the distribution
+P/H20849f/H20850has again a very pronounced peak at f =1.
+While for these BA networks the results are quite different
+when the two ﬁrst neighbors are considered instead of only
+nearest neighbors, the Apollonian network displays an al-
+most invariant behavior. For an Apollonian network almost
+the same behavior remains. The lack of sensibility to the
+increase of the neighborhood in Apollonian networks is a
+consequence of its hierarchical structure. Also for small-
+world and random networks similar results are obtained. So
+as preliminary conclusions one sees that in hierarchical net-
+works and in networks with small-world properties it does
+not matter if the information can be transmitted beyond the
+victim’s acquaintances or not: in one way or another every-
+one rapidly knows our secrets. It is worth mentioning that
+both features of small-world and hierarchical structures are
+commonly present in social networks, as addressed recently
+in other contexts /H2085132/H20852.
+After seeing what happens in small neighborhoods, the
+next question refers to the opposite limit—i.e., when all
+0 1 02 03 0
+k
+0
+1
+2
+3
+4
+5
+6
+τ
+01 0 2 0 3 0
+k
+0.75
+0.8
+0.85
+0.9
+0.95
+1
+f
+(a) (b)
+FIG. 8. Information or gossip propagation through the ﬁrst two
+neighborhoods in American schools: /H20849a/H20850spreading time /H9270/H20849in itera-
+tion steps/H20850as a function of k and /H20849b/H20850the spread factor f as a function
+of k /H20849in number of nodes /H20850. As one sees the optimal number k0 for
+which f attains a minimum decreases signiﬁcantly compared with
+the previous situation /H20849see text/H20850.
+10 100
+k
+4
+5
+6
+τ
+10 100
+k
+0.85
+0.9
+0.95
+1
+f
+(a) (b)
+FIG. 9. Propagation of information among ﬁrst and second
+neighbors of a BA scale-free network. Here one sees /H20849a/H20850the spread-
+ing time /H9270/H20849in iteration steps /H20850as a function of the degree k /H20849in
+number of nodes /H20850for m=3 /H20849circles/H20850, m=5 /H20849squares/H20850, and m=7 /H20849tri-
+angles/H20850. /H20849b/H20850Spread factor f for the same m=3 /H20849circles/H20850, m=5
+/H20849squares/H20850, and m=7 /H20849triangles/H20850. Here N=104, averages over 100
+realizations were considered, and logarithmic binning in k was
+used.
+LIND et al. PHYSICAL REVIEW E 76, 036117 /H208492007/H20850
+036117-6
+nodes are able to get the information from the originator. Of
+course in this case the fraction f almost always achieves
+eventually its maximal value f =1, since the information
+eventually reaches everybody. This is a similar situation of
+what happens with the spread of rumors or epidemics, a
+though there is still the case when some neighbor of the
+victim has no other friends and therefore the information
+cannot spread from or to it. The main question now is not
+only to know the minimal time
+/H9270needed for the information
+to reach the maximal number of nearest neighbors of the
+victim, but also to compare it with the maximal time
+/H9270max
+needed for the information to achieve the maximal fraction
+F
+N /H20851see Eq. /H208494/H20850/H20852of nodes which are reached.
+For the school networks, the behavior is illustrated in Fig.
+10. From Fig. 10/H20849a/H20850one sees that the behavior of /H9270is almost
+the same as in Fig. 8/H20849a/H20850. The maximal time decreases with k
+before attaining an approximately constant value. The large
+ﬂuctuation for k /H1102225 is due to poor statistics. The decrease
+of
+/H9270max for small k occurs, since for victims with fewer
+friends the successive neighborhoods through which the in-
+formation spreads comprehend a smaller amount of neigh-
+bors than when starting with a larger number of friends.
+As explained above the spread factor is approximately
+one independently of n, yielding a delta distribution P/H20849f/H20850
+/H11011
+/H9254/H208491− f/H20850, while the maximal fraction FN increases fast for
+small k and rapidly attains a more or less constant value
+around FN /H110110.6. Therefore, no optimal number of friends is
+observed.
+Figure 11 shows what happens in the BA case. As one
+sees from Fig. 11/H20849a/H20850, both /H9270and /H9270max decrease with m. Fur-
+ther, for both quantities /H9270/H20849black symbols /H20850and /H9270max /H20849white
+symbols/H20850, a fast convergence to a logarithmic dependence on
+k is observed when k increases. Interestingly, while the slope
+as a function of ln k differs between /H9270and /H9270max, in each case
+it is approximately independent of m, being apparently a fea-
+ture of the scale-free topology.
+In this situation one has always f =1. As for FN, very large
+values are now observed /H20849FN /H110220.7/H20850independently of k and
+FN increases very fast attaining FN /H110111 for k /H1102210 neighbors
+/H20851see Fig. 11/H20849b/H20850/H20852. In other words, on BA networks, in order
+that all neighbors of a certain victim get the information, it
+must spread throughout the entire network.
+Figure 12 illustrates the case of the Apollonian network.
+The value of
+/H9270max /H33356/H9270increases more slowly with k, both
+quantities being equal for very large k values. This similarity
+between both spreading times /H9270/H11011/H9270max is in fact another piece
+of evidence for the fact that in order to enable the informa-
+tion to reach all neighbors it must spread throughout the
+entire network. In fact, from Fig. 12/H20849c/H20850one also sees that in
+the range where
+/H9270max /H11022/H9270, FN /H110211, being equal to 1 only in the
+range /H9270= /H9270max.
+Finally, we examine the case of small-world networks il-
+lustrated in Fig. 13. From Fig. 13/H20849a/H20850one sees that the spread-
+ing time /H9270increases almost linearly with the rewiring prob-
+10 20 30
+k
+4
+6
+8
+10
+10 20 30
+k
+0
+0.2
+0.4
+0.6
+0.8
+1
+τmax
+τ
+f
+FN
+(a)
+(b)
+FIG. 10. The spread of information through the entire school
+networks. /H20849a/H20850Spreading time /H9270/H20849in iteration steps /H20850and maximal
+spreading time /H9270max as a function of degree k /H20849in number of nodes /H20850.
+/H20849b/H20850Spread factor f and total affected fraction FN as a function of k.
+10 100
+k
+3
+4
+5
+6
+7
+τ, τmax
+10 100
+k
+0.75
+0.8
+0.85
+0.9
+0.95
+1
+FN
+(a) (b)
+FIG. 11. The propagation of information throughout an entire
+BA network. /H20849a/H20850The spreading time /H9270and maximal spreading time
+/H9270max, both in iteration steps, as a function of the degree k /H20849in number
+of nodes /H20850for m=3 /H20849circles/H20850, m=5 /H20849squares/H20850, and m=9 /H20849triangles/H20850.
+The total fraction FN of nodes that get the information is plotted in
+/H20849b/H20850. In all cases, f =1 always /H20849see text/H20850. Here N=103, averages over
+100 realizations were considered, and logarithmic binning in k was
+used.
+10 100
+k
+2
+3
+4
+5
+6
+7
+8
+9
+τ, τmax
+10 100
+k
+0
+0.2
+0.4
+0.6
+0.8
+1
+FN
+(a)
+(b)
+FIG. 12. Propagation of information on an Apollonian network
+with n=8 generations: /H20849a/H20850minimal time /H9270and maximal time /H9270max,
+both in iteration steps, and /H20849b/H20850the fraction FN between the total
+number of nodes which are reached by the information and the total
+number N of nodes, both as functions of k /H20849in number of nodes /H20850.
+Here, P/H20849
+/H9270/H20850/H11008P/H20849/H9270max/H20850/H11008P/H20849k/H20850/H11008k−/H9253/H20849see text/H20850.
+SPREADING GOSSIP IN SOCIAL NETWORKS PHYSICAL REVIEW E 76, 036117 /H208492007/H20850
+036117-7
+ability p except at the end for large values of p /H20849random
+network/H20850. The maximal spreading time /H9270max is very large for
+low rewiring probabilities, due to a large average path
+length, and decreases one order of magnitude in the range
+−2 /H11021log
+10 p /H11021−1 corresponding to small-world networks. In
+fact, /H9270max follows the dependence of the average path length
+on p.
+As for the total fraction FN illustrated in Fig. 13/H20849b/H20850one
+ﬁnds the opposite dependence on p than the one found for
+/H9270max: for low /H20849large/H20850values of p one ﬁnds low /H20849large/H20850values
+of FN, and a pronounced increase is observed throughout the
+entire small-world regime. To explain this behavior one must
+use both the average path length and the clustering coefﬁ-
+cient, L/ L
+0 and C/ C0, shown in Fig. 7/H20849a/H20850. For random net-
+works /H20849p=1 /H20850the total fraction attains FN =1 very fast due to
+the very short average path length. For small values of p,
+although regular networks have an average path length that is
+larger than in random networks, the spreading time needed to
+attain F
+N =1 is now proportional to L. In the small-world
+regime, however, the average path length is small, but the
+way the neighbors are connected isolates in some few cases
+nodes from the information spreading process. So although
+small-world networks have large cluster coefﬁcients as in
+regular networks, the long-range connections change signiﬁ-
+cantly the local topology of a given node neighborhood.
+IV . INTRODUCING A TRANSMISSION PROBABILITY
+In all the previous results each friend will surely spread
+the gossip further. Fortunately people are on average not as
+nasty as that. One should expect that only a certain fraction
+q /H110211 of our friends are not worth to be trusted. In this sec-
+tion we address this more realistic situation.
+Since we do not have any sociological information about
+the topological features of the “good” friends, we introduce q
+as a probability that a node has to spread the gossip. For the
+particular case q=1 one reduces to the situations studied pre-
+viously.
+Two possible ways of propagation may then occur. One
+concerns a scenario where friendship connections are related
+to contacts between the nodes at a given instant. In this situ-
+ation a certain individual tries only once, with probability q,
+to spread the information to its friends. Therefore, if the gos-
+sip is not “accepted” once, it will never be. Another scenario
+is of course when the spread is tried repeatedly at each time
+step. We will start with this latter scenario and end with the
+more pleasant one where gossip is only able to spread from
+the nodes which heard it most recently.
+Introducing the new parameter q in the model we go back
+to the ﬁrst information spreading model studied in Sec. II
+where the gossip only spreads to friends of the victim. At
+each time step the neighbors which already know the gossip
+repeatedly try to spread it to other friends of the victim.
+Therefore, one expects to attain the same value of f that one
+measured for q=1, but this time only after a larger spreading
+time—namely,
+/H9270/H11032= /H9270/ q. Figure 14 shows the result of such
+an information propagation regime for the school networks
+and for several values of q. The corresponding curves of f
+are plotted in Fig. 14/H20849b/H20850.
+Of course for q=0 the spreading time is always
+/H9270=0 and
+the spread factor equals f =1/ k since only the node starting
+the gossip will know it. As expected, for all other values the
+spread factor coincides with the one for q=1, while the
+spreading time preserves its logarithmic dependence on k for
+large degrees and the exponent increases with 1/ q,a se x -
+plained below.
+In the insets of both plots in Fig. 14 we show for com-
+parison the spreading time
+/H9270and spread factor f f o raB A
+network with N=1000 and m=9. A strong deviation from the
+logarithmic dependence of the spreading time is observed,
+due to the high number of initial outgoing connections /H20849m
+=9 /H20850.
+-4 -3 -2 -1 0
+log10 p
+1
+10
+100
+-4 -3 -2 -1 0
+log10 p
+0.01
+0.1 FN
+τmax
+τ
+(a) (b)
+FIG. 13. Information propagation in small-world networks when
+it spreads over the entire network. /H20849a/H20850Spreading time /H9270and maxi-
+mal time /H9270max, both in iteration steps and /H20849b/H20850total fraction FN as a
+function of the rewiring probability p. Here N=103 nodes and av-
+erages over 100 realizations were considered.
+11 0
+k
+0
+2
+4
+6
+8
+10
+τ
+11 0
+k
+0
+0.2
+0.4
+0.6
+0.8
+1
+f10 100
+k
+0
+5
+10
+15
+20
+10 100
+k
+0
+0.2
+0.4
+0.6
+0.8
+1
+(a) (b)
+FIG. 14. Information or gossip propagation among ﬁrst neigh-
+bors with probability q on a real friendship network of American
+students /H2085115/H20852averaged over 84 schools. In /H20849a/H20850we show the spread-
+ing time /H9270/H20849in iteration steps /H20850and in /H20849b/H20850the spread factor f, both as
+a function of degree k /H20849in number of nodes /H20850. The insets show the
+same data for the BA network with m=9 and N=1000. At each time
+step each node which knows the gossip tries to spread it. In all plots
+one has q=0 /H20849/H17034/H20850, q=0.2 /H20849/L50098/H20850, q=0.4 /H20849/H17040/H20850, q=0.6 /H20849/H17039/H20850, q=0.8 /H20849/H17005/H20850,
+and q=1 /H20849/H17009/H20850.
+LIND et al. PHYSICAL REVIEW E 76, 036117 /H208492007/H20850
+036117-8
+The logarithmic dependence of the spreading time can be
+more easily seen when studying the Apollonian network as
+shown in Fig. 15. Here we plot the spreading time for ten
+different values of q and ﬁt all of them with a logarithmic
+function as the one in Eq. /H208491/H20850. The corresponding slope B as
+a function of q is plotted in the inset of Fig. 15 and follows
+closely a hyperbolic behavior B /H110111/ q. Thus, Eq. /H208491/H20850can be
+written more generally as
+/H9270/H110081
+q ln k. /H208495/H20850
+Finally, we can also assume that the person to which gos-
+sip did not spread at the ﬁrst attempt will never get it. In this
+way, the gossip is a quantity which percolates through the
+system.
+In Fig. 16 we see the behavior of
+/H9270and f for different
+values of q for the school networks and in the inset for the
+BA network. When the spreading probability q decreases, the
+minimum in f ﬁrst shifts to larger k and ﬁnally disappears.
+The asymptotic logarithmic law of /H9270for large k remains for
+all probabilities q. As in previous cases, the BA network has
+a similar behavior as the school friendships. The Apollonian
+network, however, behaves quite differently:
+/H9270ﬁrst increases
+with q and then eventually falls off to zero so that there
+exists a special value qmax /H110150.75 for which the spreading
+time /H9270is maximized.
+V . DISCUSSION AND CONCLUSIONS
+In this paper, we studied a general model of information
+spreading suited for different kinds of social information. In
+the usual case of rumor or opinion propagation the informa-
+tion spreads throughout the network, and all nodes are
+equally capable of transmiting the information to their neigh-
+bors. Two measures were proposed to characterize the
+spreading of such a model—namely, the spreading factor
+measuring the accessible neighborhood around each node
+which can be reached by the information spreading and the
+spreading time which computes the minimum time to reach
+such a neighborhood.
+Further, we have shown that by computing these quanti-
+ties for each node the resulting distributions give additional
+insight into the underlying network structure on which the
+spreading takes place. More precisely, the magnitude of the
+skewness of the distribution of the spreading factor gives a
+measure of how difﬁcult it is to access one neighbor, starting
+from another one. For positive values of the skewness, most
+of the pairs of neighbors are connected by some path of
+connections, while for negative values of the skewness,
+neighbors are more likely grouped into separated connected
+pairs.
+In the particular case that the information is about a cer-
+tain target node and thus is of interest to a restricted neigh-
+borhood around it, one yields a minimal model to study gos-
+sip spreading. Applying such a scheme to artiﬁcal and
+empirical networks, we found that, although different in their
+statistical properties, information on empirical social net-
+works seems to spread similarly to what is observed in scale-
+free networks. In both cases, the spreading time shows a
+logarithmic dependence on the degree, indicating small-
+world effect within the nearest neighborhood of the nodes.
+Further, from the computation of the spreading factor we
+observed that there is a nontrivial optimal number of friends
+which minimizes the danger of being gossiped that depends
+on the size of the network and on the total number of ac-
+quaintances in it. We also showed that this optimal value is
+characteristic of either scale-free networks or real social net-
+works, but is not observed in small-world networks, raising
+1 10 100 1000
+k
+10
+20
+30
+40
+50
+60
+70
+τ
+0.1 1
+q
+1
+10
+B
+FIG. 15. Gossip propagation in an Apollonian network with n
+=8 generations, for ten values of probability q
+=0,0.1,0.2, . . . ,0.9,1. The slope B of the dashed lines which ﬁt the
+data decreases with q as shown in the inset where the line yields
+B=exp /H208490.23–0.88 ln q/H20850/H110111/ q /H20849see text/H20850.
+10 100
+k
+1
+2
+3
+4
+5
+6
+τ
+11 0
+k
+1
+2
+3
+4
+5
+6
+τ
+10 100
+k
+0
+0.2
+0.4
+0.6
+0.8
+1
+f
+10
+k
+0
+0.2
+0.4
+0.6
+0.8
+1
+f
+(a)
+(b)
+FIG. 16. Propagation of gossip among ﬁrst neighbors on a real
+friendship network of American students /H2085115/H20852, when persons to
+which gossip did not spread at the ﬁrst attempt will never get it. In
+/H20849a/H20850we show the spreading time
+/H9270/H20849in iteration steps /H20850and in /H20849b/H20850the
+spread factor f, both as a function of degree k. The insets show the
+same data for the BA network with m=9 and N=1000. After know-
+ing the gossip each node tries to spread it only once /H20849see text/H20850.I na l l
+plots one has q=0 /H20849/H17034/H20850, q=0.25 /H20849/L50098/H20850, q=0.5 /H20849/H17040/H20850, q=0.75 /H20849/H17039/H20850, and
+q=1 /H20849/H17005/H20850.
+SPREADING GOSSIP IN SOCIAL NETWORKS PHYSICAL REVIEW E 76, 036117 /H208492007/H20850
+036117-9
+the question of what network properties may give rise to the
+emergence of such an optimal value.
+However, when the information spreads beyond the near-
+est neighbors, in a similar way as for propagation of rumors
+and epidemics, this optimal value disappears with the spread-
+ing factor rapidly converging to f =1. Also the logarithmic
+dependence of the spreading time no longer holds in this
+case.
+Since one person does not in general spread information
+to all her neighbors, neither at the same time nor with com-
+plete certainty, we also studied regimes of information
+propagation where the spreading from one node to another
+occurs with some probability q.
+Due to their particular features and assumptions, our con-
+cepts and measures to address the propagation of information
+in networks could be suited to other situations. For instance,
+in the case of the Internet, some Trojan horses need to con-
+nect to a speciﬁc host to download some data in order to
+become effective. For them, the spread factor should be a
+good measure to assess the vulnerability to the spreading of
+this virus attack. In this situation probably an experimental
+test of the emergence of the optimal degree found in the
+cases stated here could be easier to be implemented.
+ACKNOWLEDGMENTS
+The authors proﬁtted from discussions with Constantino
+Tsallis, Marta C. González, and Ana Nunes. We thank the
+“Deutsche Forschungsgemeinschaft” and CAPES, CNPq,
+and FUNCAP /H20849Brazilian Agencies/H20850for support.
+/H208511/H20852J. S. Andrade, Jr., H. J. Herrmann, R. F. S. Andrade, and L. R.
+da Silva, Phys. Rev. Lett. 94, 018702 /H208492005/H20850.
+/H208512/H20852A. D. Sánchez, J. M. López, and M. A. Rodríguez, Phys. Rev.
+Lett. 88, 048701 /H208492002/H20850.
+/H208513/H20852P. L. Krapivsky and S. Redner, Phys. Rev. Lett. 90, 238701
+/H208492003/H20850.
+/H208514/H20852M. Mobilia and S. Redner, Phys. Rev. E 68, 046106 /H208492003/H20850.
+/H208515/H20852S. Boccaletti, V . Latora, Y . Moreno, M. Chavez, and D.-U.
+Hwang, Phys. Rep. 424, 175 /H208492006/H20850.
+/H208516/H20852C. G. Shao, Z. Z. Liu, J. F. Wang, and J. Luo, Phys. Rev. E 68,
+016120 /H208492003/H20850.
+/H208517/H20852P. G. Lind, M. C. González, and H. J. Herrmann Phys. Rev. E
+72, 056127 /H208492005/H20850.
+/H208518/H20852P. S. Dodds and D. J. Watts, Phys. Rev. Lett. 92, 218701
+/H208492004/H20850.
+/H208519/H20852C. Castellano, M. Marsili, and A. Vespignani, Phys. Rev. Lett.
+85, 3536 /H208492000/H20850.
+/H2085110/H20852A. Pluchino, V . Latora, and A. Rapisarda, Int. J. Mod. Phys. C
+16, 515 /H208492005/H20850.
+/H2085111/H20852S. Galam, Phys. Rev. E 71, 046123 /H208492005/H20850.
+/H2085112/H20852M. He, H. Xu, and Q. Sun, Int. J. Mod. Phys. C 15, 947
+/H208492004/H20850.
+/H2085113/H20852V . M. Eguíluz and M. G. Zimmermann, Phys. Rev. Lett. 85,
+5659 /H208492000/H20850.
+/H2085114/H20852P. G. Lind, J. S. Andrade, Jr., L. R. da Silva, and H. J.
+Herrmann, Europhys. Lett. 78, 68005 /H208492007/H20850.
+/H2085115/H20852AddHealth program designed by J. R. Udry, P. S. Bearman,
+and K. M. Harris funded by the National Institute of Child and
+Human Development /H20849PO1-HD31921/H20850.
+/H2085116/H20852H. J. Herrmann, D. C. Hong, and H. E. Stanley, J. Phys. A 17,
+L261 /H208491984/H20850.
+/H2085117/H20852A. Rapoport, in Handbook of Mathematical Psychology , edited
+by R. D. Luce, R. R. Bush, and E. Galanter /H20849Wiley, New York,
+1963/H20850, V ol. 2, pp. 493–579.
+/H2085118/H20852D. J. Watts and S. H. Strogatz, Nature /H20849London/H20850393, 440
+/H208491998/H20850.
+/H2085119/H20852L. A. N. Amaral, A. Scala, M. Barthélemy, and H. E. Stanley,
+Proc. Natl. Acad. Sci. U.S.A. 97, 11149 /H208492000/H20850.
+/H2085120/H20852M. C. González, P. G. Lind, and H. J. Herrmann, Phys. Rev.
+Lett. 96, 088702 /H208492006/H20850; Int. J. Mod. Phys. B 20, 5165 /H208492006/H20850.
+/H2085121/H20852M. M. Telo da Gama and A. Nunes, Eur. Phys. J. B 50, 205
+/H208492006/H20850.
+/H2085122/H20852A.-L. Barabási and R. Albert, Science 286, 509 /H208491999/H20850.
+/H2085123/H20852S. N. Dorogovtsev, A. V . Goltsev, and J. F. F. Mendes, Phys.
+Rev. E 65, 066122 /H208492002/H20850.
+/H2085124/H20852P. G. Lind, J. A. C. Gallas, and H. J. Herrmann, Phys. Rev. E
+70, 056207 /H208492004/H20850.
+/H2085125/H20852P. S. Bearman, J. Moody, and K. Stovel, Am. J. Sociol. 110,
+44 /H208492004/H20850.
+/H2085126/H20852M. C. González, P. G. Lind, and H. J. Herrmann, Physica D
+224, 137 /H208492006/H20850.
+/H2085127/H20852M. Catanzaro, M. Boguña, and R. Pastor-Satorras, Phys. Rev.
+E 71, 027103 /H208492005/H20850.
+/H2085128/H20852M. Catanzaro, M. Boguña, and R. Pastor-Satorras, Phys. Rev.
+E 71, 056104 /H208492005/H20850.
+/H2085129/H20852D. J. Watts and S. H. Strogatz, Nature /H20849London/H20850393, 440
+/H208491998/H20850.
+/H2085130/H20852R. Albert and A.-L. Barabási, Rev. Mod. Phys. 74,4 7 /H208492002/H20850.
+/H2085131/H20852K. Malarz, Z. Szvetelszky, B. Szekfu, and K. Kulakowski,
+Acta Phys. Pol. B 37, 3049 /H208492006/H20850.
+/H2085132/H20852A. Grabowski and R. A. Kosinski, Phys. Rev. E 73, 016135
+/H208492006/H20850.
+LIND et al. PHYSICAL REVIEW E 76, 036117 /H208492007/H20850
+036117-10

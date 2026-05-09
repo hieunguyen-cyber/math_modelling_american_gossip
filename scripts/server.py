@@ -33,7 +33,14 @@ def build_graph(params: Dict[str, Any]):
     if gtype == 'er':
         return generate_er(n, float(params.get('p', 0.01)), seed=seed)
     if gtype == 'apollonian':
-        return generate_apollonian(n, seed=seed)
+        import math
+        # n from UI is target nodes. N_n = 0.5 * (3**(gen+1) + 5) => 3**(gen+1) = 2*N_n - 5
+        if n > 20:
+            gen = int(round(math.log(2*n - 5, 3))) - 1
+        else:
+            gen = n
+        gen = max(0, min(gen, 8)) # max 8 generations = 9845 nodes
+        return generate_apollonian(generations=gen, seed=seed)
     raise ValueError('unknown graph type')
 
 
@@ -65,10 +72,11 @@ def api_generate():
         origin = int(o_param) if o_param is not None else (neigh[0] if neigh else victim)
         mode = params.get('mode', 'local')
         q = float(params.get('q', 1.0))
-        if mode == 'probabilistic':
+        if mode.startswith('probabilistic'):
             engine = ProbabilisticGossip(G)
             one_shot = params.get('attempt') == 'one-shot'
-            res = engine.run(victim, origin, q=q, one_shot=one_shot)
+            constrain = mode == 'probabilistic'
+            res = engine.run(victim, origin, q=q, one_shot=one_shot, constrain_to_neighbors=constrain)
         elif mode == 'k-hop':
             from propagation.kth_neighbor import induced_k_hop_subgraph
             k = int(params.get('k', 2))

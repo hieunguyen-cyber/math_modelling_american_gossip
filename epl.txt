@@ -1,0 +1,514 @@
+This content has been downloaded from IOPscience. Please scroll down to see the full text.
+Download details:
+IP Address: 144.173.6.37
+This content was downloaded on 16/08/2015 at 13:25
+Please note that terms and conditions apply.
+The spread of gossip in American schools
+View the table of contents for this issue, or go to the journal homepage for more
+2007 EPL 78 68005
+(http://iopscience.iop.org/0295-5075/78/6/68005)
+Home Search Collections Journals About Contact us My IOPscience
+June2007
+EPL, 78(2007)68005 www.epljournal.org
+doi: 10.1209/0295-5075/78/68005
+The spread of gossip in American schools
+P. G. Lind 1,2,L .R .d aS i l v a3,J .S .A n d r a d ejr.4 and H. J. Herrmann 4,5
+1 Institute for Computer Physics, University of Stuttgart - 70569 Stuttgart, Germany
+2 Centro de F ´ısica Te´orica e Computacional - Avenida Professor Gama Pinto 2, 1649-003 Lisbon, Portugal
+3 Departamento de F ´ısica, Universidade Federal do Rio Grande do Norte - 59072-970 Natal,
+Rio Grande do Norte, Brazil
+4 Departamento de F ´ısica, Universidade Federal do Cear´a - 60451-970 Fortaleza, Cear´a, Brazil
+5 IfB, HIF E12, ETH H¨ onggerberg - CH-8093 Z¨urich, Switzerland
+received5December2006;acceptedinﬁnalform8May2007
+publishedonline4June2007
+PACS 89.75.Hc–Networksandgeneologicaltrees
+PACS 89.65.Ef–Socialorganizations;anthropology
+PACS 87.23.Ge–Dynamicsofsocialsystems
+Abstract–Gossipisdeﬁnedasarumorwhichspeciﬁcallytargetsoneindividualandessentially
+onlypropagateswithinitsfriendshipconnections.Howfastandhowfaragossipcanspreadis
+fortheﬁrsttimeassessedquantitativelyinthisstudy.Forthatpurposeweintroducethe“spread
+factor”andstudyitonempiricalnetworksofschoolfriendshipsaswellasonvariousmodelsfor
+socialconnections.Wediscoverthatthereexistsanidealnumberoffriendshipconnectionsan
+individualshouldhavetominimizethedangerofgossippropagation.
+Copyright c⃝ EPLA, 2007
+Introduction. –Gossipissoinherenttohumannature
+that it was already worshiped in the Greek mythology
+throughthemany-tonguedPheme.Itsimpactinhistory
+and in sociology is so large that it has been studied
+frommanypointsofview[1,2].However,recentinsights
+intothemathematicalpropertiesofsocialnetworks[3,4]
+andparticularlythoseinvolvingfriendships[5],openup
+a new way of understanding how the propagation of
+gossipdependsonconnectionsoffriendships.Wewillin
+particularconsidergossipwithinthesocietyofAmerican
+schoolstudents.
+In the last years many social network models have
+beenstudiedservingtodescribephenomenarangingfrom
+theInternet,epidemicsandrumorspreadingtoscientiﬁc
+collaborations,movieactorsandsexualintercourse[3–8].
+Manypropertieshavebeenidentiﬁedtocharacterizethese
+networkslikethedegreedistribution,theshortestpath,
+the cliquishness, the inbetweenness, etc. The study of
+gossippropagation,however,requiresstillanotherupto
+nowneverconsideredanalysis,givingrisetowhatwecall
+the“spreadfactor”andthe“spreadingtime”whichwe
+willintroduceinthisletteranddiscusstheirproperties
+andapplications.Usingthesepropertieswewillpresent
+a striking ﬁnding: in real social systems there is the
+possibility to minimize the risk of being gossiped, by
+choosinganoptimalnumberoffriendshipconnections.
+A simple model for gossip propagation. – As
+opposed to rumors, a gossip targets the behavior or
+privatelifeofaspeciﬁcperson, i.e.,atargetnode(victim)
+inthenetwork.Tomodelthesocialnetworkweconsider
+that individuals are vertices connected by bonds repre-
+sentingtheirfriendshipconnectionsasillustratedinﬁg.1.
+Attime t=0agossip(beittruthorfalsehood)iscreated
+aboutthevictimbythe“originator”(greyface).Inthe
+normalcasethegossipisonlyofinteresttothosewho
+know the victim personally and we therefore consider
+thatitonlyspreadsateachtimestepfromthevertices
+thatknowthegossiptoallverticesthatareconnected
+tothevictimanddonotyetknowthegossip, i.e.over
+thearrowsinﬁg.1.Ourdynamicsisthereforesimilarto
+anepidemicsoraburningalgorithm[9],startingatthe
+originator but limited to sites that are neighbors of
+thevictim.Thegossipspreadsuntilattainingallreach-
+ableconnectionsofthevictim, i.e.afterthreetimesteps
+inﬁg.1.
+To measure how eﬀectively the gossip attains the
+friendsofthevictim,wecalculatethetotalnumber n
+f
+of friends (nearest neighbors) who eventually hear the
+gossip in a network withN vertices (individuals), and
+the minimum timeτit takes to attain the accessible
+friends, which we call the “spreading time”. We deﬁne
+the “spread factor” as the fraction of attained nearest
+68005-p1
+P.G.Lind et al.
+Fig.1:Spreadingofagossipaboutavictimshownhavingan
+unhappyface.Ifthegossipstartsfromthegrayface,inthree
+timestepssixneighbors(faceswithopenmouth)willknowit,
+givingf=3/4and τ=3.Thegossipspreadsoverthearrows.
+Theclusteringcoeﬃcientofthevictimis C=3/14illustrating
+thesigniﬁcantdiﬀerencebetweenCandthespreadingfactor
+f(seetext).
+neighbors,f=nf/k,where kisthedegreeofthevictim.
+Therangeofthisquantity f goesfrom1 /k(whenonly
+the originator knows the gossip and cannot spread it
+furthergiving τ=0),to1,whenallfriendsofthevictim
+get to know the gossip. It is important to note thatf
+and the clustering coeﬃcientC deﬁned in refs. [10,11]
+aresimilarbutdiﬀerentbecausethelatteronlymeasures
+thenumberofbondsbetweenneighborsandcontainsno
+information about the way they are distributed. In
+particular, a large spread factor indicates the existence
+oflongpathsconnectingtheneighborsofthevictim,as
+discussedbelow.
+Thequantities τandfareaveragesoverallneighbors
+ofthevictim, i.e.overallvictim-originatorpairs.Since
+gossip is very relevant among children or students at
+school we will focus on studying these quantities on
+an empirical friendship network obtained by interview-
+ing 90118 pupils from 84 schools [12]. In this network
+friendshipconnectionswerepreciselydeﬁnedbytheeval-
+uation of questionnaires [5,12], where students named
+theindividualsinsidetheirschoolwithwhomtheyhad
+somepersonalcontact, e.g.havinglunch,talkingonthe
+phone or studying together. In this way, the friendship
+connectionsconsideredinthesenetworksimplyasomehow
+deep knowledge between linked students, diﬀerent from
+themoregeneralconceptof“acquaintance”whichcould
+beinterpretedasconnectionstosomeoneinamoresuper-
+ﬁcialmanner.Afteraddressingsuchempiricalnetworks,
+wethencomparetheserealnetworkdatatothoseobtained
+in scale-free networks, namely in the Barab´asi-Albert
+network[13]andintheApolloniannetwork(APL)[14],
+wherethesamefeaturesarealsoobserved.
+Comparative study of gossip propagation in real
+social networks. – In ﬁg. 2a we plot the results for
+11 0
+k
+0.4
+0.5
+0.6
+0.7
+0.8
+0.9
+1
+f
+10 100 1000
+k
+0
+0.1
+0.2
+0.3
+f
+11 0
+k
+0.1
+0.2
+C
+10 100 1000
+k
+0.008
+0.012
+C
+(a) (b)
+Fig. 2: (a) The spread factorf as a function of degreek
+for gossip propagation on the school friendship network of
+ref. [12]. The dashed line is the best ﬁt to the data of the
+functionf(k)=1+ alnk+b(lnk)
+2,withparameters a=−0.63
+andb=0.17.Intheinsetweseetheclusteringcoeﬃcient C(k),
+showing that both quantities are indeed very diﬀerent (see
+text). (b) Results of a simulation with the BA network for
+m=7 andN=10 4,w h e r em is the number of edges of a
+newsite,andaveragedover100realizations.Thedottedline
+indicates f=1/k and the inset shows a diﬀerent clustering
+coeﬃcient spectrum from that of the empirical networks
+(seetext).
+the spread factorf of gossip in an empirical set of
+networksextractedfromsurveydata[12]inU.S.schools.
+Itisverysurprisingandunexpectedthatthecurveshows
+aminimum, i.e.thatweﬁndacharacteristicdegree k0for
+whichfandthereforethegossipspreadingisthesmallest.
+In ﬁg. 2b we see the same quantity calculated for the
+Barab´asi-Albert(BA)networkfor m=7andalsoseea
+minimum at a characteristic degreek0 which is larger
+becausewecouldproducemuchlargerBAnetworkson
+the computer thus having a larger average degree⟨k⟩.
+Theconsequenceofthisﬁndingisthattherelativedamage
+due to gossip can be minimized by choosing a speciﬁc
+connectivityk0 whichdependsonthesizeofthenetwork.
+Since the increase off reﬂects the increase of the
+maximallengthofallpathsconnectingnearestneighbors
+ofthevictim,asexplainedabove,thespectra f(k)inﬁg.2
+showthatforalargernumber kofneighborsthelength
+ofsuchmaximalpathincreasesfasterthan k,afeature
+whichcannotbeascertainfromtheclusteringcoeﬃcient
+C(k)shownintheinsets.Infact,whilefortheschools
+the clustering coeﬃcient decreases logarithmically with
+k,inBAnetworksthedecreaseistypicallyslowerthan
+logk[15].
+For BA networks, one also is able to study the
+dependenceof k
+0 onnetworksize N andaveragedegree
+⟨k⟩=2m. We ﬁnd thatk0 increases (respectively,
+decreases) logarithmically withN (respectively, m).
+Details will be reported elsewhere [16]. Therefore, this
+resultisonlyvalidforspeciﬁcBAnetworksandalready
+68005-p2
+ThespreadofgossipinAmericanschools
+11 0
+k
+1
+2
+3
+4
+5
+6
+τ
+1 10 100 1000
+k
+0
+2
+4
+6
+8
+10
+12
+τ
+1234 5 6
+τ
+6
+8
+10
+12
+14
+16
+knn
+2468
+τ
+100
+knn
+(a)
+(b)
+Fig. 3: Semi-logarithmic plot of the spreading timeτas a
+function of the degreek for (a) the real friendship network
+of American students [12] averaged over 84 schools and
+(b)theBAnetworkwith N=10 4 nodesfor7(stars),where
+mis the number of edges of a new site, and averaged over
+100realizations,andtheAPLnetworkwith n=9generations
+(triangles).Fittingeq.(1)forlarge ktothesedata(solidlines)
+wehave B=4.5fortheschools, B=2.28forBAand B=1.28
+fortheAPLcase.Intheinsets,weseetheaveragedegree knnof
+neighborsofnodesasafunctionof τ,showingthenon-trivial
+relationshipbetweenthelogarithmicspreadingtimeandthe
+degreecorrelations(seetext).
+reducingmintheBAwill,besidesreducingglobally f,
+alsomaketheminimumlesspronounced.
+ForanAPLnetworkallneighborsofagivenvictimsite
+canbereachedbyagossipsincetheyareallconnectedin
+aclosedpathsurroundingthevictimsite.Thismeansthat
+f=1,aresultthatclearlyshowsthediﬀerencebetween
+thespreadfactor f andtheclusteringcoeﬃcient,which
+inthiscaseis C=0.828[14].
+Inﬁg.3weseethedependenceofthespreadingtime τ
+onthedegreeofthevictiminasemi-logarithmicplot.The
+caseofgossipintheempiricalsetofnetworksextracted
+fromsurveydata[12]inU.S.schoolscanbeseeninﬁg.3a.
+In ﬁg. 3b we see the data for two scale-free networks,
+namelytheBAandtheAPLones.Inallcases τclearly
+growslogarithmically,
+τ=A+Blogk, (1)
+forlarge k.InthecaseoftheAPLnetwork,onecaneven
+derivethisbehavioranalytically.Inordertocommunicate
+betweentwoverticesofthe n-thgeneration,oneneedsup
+tonsteps,whichleadsto τ∝n.Since[14], k=3×2
+n−1,
+oneeasilyobtainsthat τ∝logk.
+Another important point to address is to study the
+degreecorrelation[17],measuredbytheaveragenumber
+knn of neighbors of a node withk neighbors. Here,
+contrarytowhatonewouldexpectfromaﬁrstapproach,
+therelationbetweendegreecorrelationsandthelogarith-
+micbehaviorofthespreadingtimeisnotstraightforward.
+0 0.2 0.4 0.6 0.8 1
+k
+*
+0
+0.2
+0.4
+0.6
+0.8
+1
+f
+0 0.2 0.4 0.6 0.8 1
+1
+2
+3
+4
+5
+6
+τ
+Fig.4:Dependenceofthespreadfactor f onthenormalized
+degreek∗=(k−kmin)/(kmax−kmin), for the random graph
+withN=10 3 sitesand p=0.02(circles)and0 .08(squares).In
+theinset:thespreadingtime τoftherandomnetworksforthe
+sameparametervalues.
+Intheempiricalnetworkswefoundthesamedistribution
+for bothknn and τ, yielding an approximate linear
+relationship between them, as illustrated in the inset
+of ﬁg. 3a. However, in BA and APL networks,k
+nn
+decreases withk [15] (disassortative networks). Conse-
+quently, as shown in the inset of ﬁg. 3b, the degree
+correlations decrease withτ. In BA networks such
+decreaseisatmostlogarithmic[15],whileinAPLitis
+exponential.
+The typical behavior observed for the networks
+aboveisnotobservedinuncorrelatedrandomnetworks,
+as shown in ﬁg. 4. Here, one sees that, in random
+networks, the spread factor and spreading time do not
+depend so strongly on the average degree, i.e. on the
+connecting probabilityp. Namely, for low values ofp
+(belowthepercolationthreshold[3]) f∼1/kandτ∼1,
+while for larger values, more and more connections
+are introduced, in particular among the neighbors of
+each node, enabling that more nearest neighbors know
+aboutthegossip(larger f).Wehavealsostudiedgossip
+spreading on other networks, like the Strogatz-Watts
+networks[10]andtheconﬁgurationmodel[17]aswillbe
+presentedinaforthcominglongerpaper[16].
+Thelargeﬂuctuationsinspreadingforlarge τaredue
+tothesmallstatisticforthosevalues,ascanbeclearly
+seenfromthe distribution P(τ) in ﬁg. 5.In ﬁg. 5b we
+see that for the APL network this distribution decays
+exponentially. This behavior can be understood if we
+considerthat P(τ)dτ=P(k)dkanduseeq.(1)together
+withthedegreedistribution, P(k)∝k
+−γ,toobtain
+P(τ)∝eτ(1−γ)/B, (2)
+68005-p3
+P.G.Lind et al.
+1357 91 1
+τ
+0.01
+0.1
+1.0
+P(τ)
+49 1 4
+τ
+10
+–6
+10
+–5
+10
+–4
+10
+–3
+10
+–2
+10
+–1
+10
+0
+P(τ)
+(a)( b)
+Fig. 5: DistributionP(τ) of spreading timesτfor (a) the
+realschoolnetwork(circles)andtheBAnetworkwith m=7
+and N=1000 (solid line), and (b) the APL network of 8
+generations. The solid lines are the best ﬁt to the data for
+largeτvaluesofeq.(2),withparameters(1 −γ)/B=−1.26
+and −0.45 for the real school network in (a) and the APL
+networkin(b),respectively.
+forlarge k.Theslopeinﬁg.5bisprecisely(1 −γ)/B=
+−0.45using B fromﬁg.3band γ=1.58fromref.[14].
+Interestingly,P(τ)oftheschoolnetworkalsofollowsan
+exponentialdecayforlarge τ,butwitha2 .8timessmaller
+characteristicdecaytime,andhasalocalmaximumfor
+smallτ, as seen in ﬁg. 5a (circles). There we also plot
+P(τ)fortheBAnetworkfor m=7(solidline),whichhas
+averysimilarshapebutisslightlyshiftedtotheright,
+duetothelargerminimalnumberofconnections.Herethe
+distributionP(τ)countsthevaluesof τforeverysingle
+originator,whileinﬁg.3athevalueof τisanaverageofall
+neighborsofanodewith kneighbors.Thereforeinﬁg.5a
+afewlargervaluesof τappear.
+Noteverybodylikestogossip,sothatitseemsrealistic
+to consider also the case in which the transfer from
+one person to the other happens with a probabilityq.
+Assumingthatthepersontowhichagossipdidnotspread
+at the ﬁrst attempt, will never get it, yields a regime
+similartoconditionalpercolationtotheneighborhoodof
+thevictim.Whenthespreadingprobability qdecreases,
+the minimum inf ﬁrst shifts to largerk and ﬁnally
+disappears.Theasymptoticlogarithmiclawof τforlarge
+kseemspreservedforallprobabilities q.Asbefore,the
+BAnetworkfor m=7hasasimilarbehaviorastheschool
+friendships.
+Ifateachtime-steptheneighborswhichalreadyknow
+the gossip repeatedly try to spread it to the common
+friends,oneobservesthesamevalueof f measuredfor
+q=1,andthespreadingtimescalesas τ
+′∼τ/q,where τ
+ismeasuredfor q=1.Inthisway,fromeq.(1)onecan
+write
+τ∼1
+qαlogk (3)
+11 0
+k
+0
+5
+10
+15
+20
+25
+τ
+q=1
+q=0.8
+q=0.5
+q=0.3
+q=0.1
+0.1 1
+q
+10
+B
+(a) (b)
+Fig.6:Informationorgossippropagationamongﬁrstneighbors
+with probabilityq,whe ne ac hnodewhi c hk no wst hegossi p
+tries to spread it (see text) on a real friendship network of
+American students [12] averaged over 84 schools. In (a) we
+showthespreadingtime τforq=1( ◦),q=0.8(•),q=0.5
+(□),q=0.3(■)and q=0.1(△).Thedashedlinesobeyeq.(1)
+andhavetheslopes Bindicatedin(b).
+withα∼1.Figure6showstheresultofsuchinformation
+propagationregimefortheschoolnetworks.Thespreading
+time is shown in ﬁg. 6a for several values of 0⩽q ⩽1.
+In each case the dashed lines indicate the logarithmic
+dependence in eq. (1) with proper constantsAandB.
+Inﬁg.6bweplottheslope Bineq.(1)fordiﬀerentvalues
+ofq,yielding α=0.8ineq.(3).
+Finally,onecanalsoimaginethecaseofamoviestar
+for whom the gossip spreads also over strangers,i.e.
+over vertices which are not directly connected to him.
+Weconsideredthecases,wherenearestandnext-nearest
+neighborsofthevictimareinvolvedingossipspreading,
+andalsothecaseswhereallnodesareinvolved.Inboth
+casesthespreadingtime τonschoolnetworksandalsoon
+theBAnetworksbecomeindependentof kandfloosesits
+minimum.Forthecaseofgossipspreadingovertheentire
+lattice,anadditionalquantityisalsomeasured,namely
+themaximaltimeforthegossiptoreachallstudentsin
+thenetwork.Asexpectedsuchtimedecreaseswith k,since
+theempiricalnetworksusedinthisworkareassortative,
+asillustratedinﬁg.3a.
+Conclusion. –Wehaveestablishedanovelpropertyof
+networksrelatedtothespreadingofgossip.Measuringthis
+propertyinschoolfriendshipnetworksuncoversthestrik-
+ingresultthatthereexistsanidealnumberoffriendsfor
+whichthespreadingisminimized.Moreover,wealsofound
+that the spreading time grows logarithmically with the
+numberoffriends,relatedtodegreecorrelationsamong
+friends,andhasanexponentialdistribution,similarlyto
+somescale-freenetworks.Theseresultswereanalytically
+derived for the Apollonian network. When gossip also
+spreadsamongstrangers,thenon-trivialdependencyon
+68005-p4
+ThespreadofgossipinAmericanschools
+the degree of connectivity disappears. We have investi-
+gatedmanymoredetailsontheissuespresentedherethat
+willbepublishedelsewhere[16].Infact,duetoitspartic-
+ularfeaturesandassumptions,ourconceptstomeasure
+gossiparesuitedtoothersituations.Forinstance,inthe
+caseoftheInternet,someTrojanhorsesneedtoconnectto
+aspeciﬁchosttodownloadsomedatainordertobecome
+eﬀective. For them the spread factor should be a good
+measure to assess the vulnerability to the spreading of
+thisvirusattack.
+∗∗∗
+WeproﬁtedfromdiscussionswithConstantinoTsallis
+and C. L. Nunes de Oliveira and thank the Max
+Planckprize,CAPES,CNPqandFUNCAPforﬁnancial
+support.
+REFERENCES
+[1] Allport G. W. and Postman L., The Psychology of
+Rumor(HenryHolt&Co,NewYork)1947.
+[2] Bergmann J. R. and Bednarz J. jr., Discreet Indis-
+cretions: The Social Organization of Gossip (Aldine,
+London)1993.
+[3] Barab´asi A. L., Linked: The New Science of Networks
+(PerseusBooksGroup,CambridgeMA)2002.
+[4] W atts D. J., Small Worlds: The Dynamics of Networks
+between Order and Randomness (Princeton University
+Press)2003.
+[5] Gonz´alez M. C., Lind P. G. and Herrmann H. J. ,
+Phys. Rev. Lett., 96(2006)088702.
+[6] Cohen R., Erez K., ben-A vraham D. and Havlin S.,
+Phys. Rev. Lett., 85(2000)4626.
+[7] Zanette D. H., Phys. Rev. E, 64(2001)R050901.
+[8] Zanette D. H., Phys. Rev. E, 65(2002)041908.
+[9] Herrmann H. J., Hong D. C. and Stanley H. E. ,
+J. Phys. A, 17(1984)L261.
+[10] W atts D. J.and Strogatz S. H., Nature, 393(1998)
+440.
+[11] Amaral L. A. N., Scala A., Barth ´elemy M. and
+Stanley H. E. , Proc. Nat. Acad. Sci. USA , 97(2000)
+11149.
+[12] Add Health program designed by J. R. Udry, P. S.
+BearmanandK.M.HarrisfundedbyNationalInstitute
+ofChildandHumanDevelopment(PO1-HD31921).
+[13] Barab´asi A. L. and Albert R., Science, 286(1999)
+509.
+[14] Andrade J. S.jr., Herrmann H. J., Andrade R. F. S.
+and da Silva L. R., Phys. Rev. Lett., 94(2005)018702.
+[15] Dorogtsev S. and Mendes J. F. F. , Evolution of
+Networks: From Biological Nets to the Internet and
+WWW(OxfordUniversityPress)2003.
+[16] Lind P. G., da Silva L. R., Andrade J. S. jr. and
+Herrmann H. J. , Spreading gossip in social networks ,
+submitted(2007).
+[17] Catanzaro M., Bogun ˜na M. and Pastor-Santorras
+R., Phys. Rev. E, 71(2003)027103.
+68005-p5

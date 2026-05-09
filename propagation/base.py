@@ -54,7 +54,7 @@ class GossipPropagationEngine:
         self.timesteps = len(self.history) - 1 if len(self.history) > 0 else 0
         # compute reached friends (exclude victim from reached friends)
         reached_friends = set(visited) & set(self.G.neighbors(victim))
-        return {"history": self.history, "reached": reached_friends, "timesteps": self.timesteps}
+        return {"history": self.history, "reached": reached_friends, "timesteps": self.timesteps, "visited": visited}
 
     def replay(self) -> List[Set[int]]:
         """Return a copy of the propagation history (frontiers per timestep)."""

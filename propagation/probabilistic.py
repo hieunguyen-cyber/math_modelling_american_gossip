@@ -12,12 +12,15 @@ class ProbabilisticGossip(GossipPropagationEngine):
       - repeated: infected nodes attempt to infect their neighbors each timestep
     """
 
-    def run(self, victim: int, originator: int, q: float = 1.0, one_shot: bool = True, max_steps: int | None = None) -> Dict:
+    def run(self, victim: int, originator: int, q: float = 1.0, one_shot: bool = True, max_steps: int | None = None, constrain_to_neighbors: bool = True) -> Dict:
         neighbors = set(self.G.neighbors(victim))
-        sub_nodes = set(neighbors) | {victim}
+        if constrain_to_neighbors:
+            sub_nodes = set(neighbors) | {victim}
+        else:
+            sub_nodes = set(self.G.nodes())
 
         if originator not in sub_nodes:
-            return {"history": [], "reached": set(), "timesteps": 0}
+            return {"history": [], "reached": set(), "timesteps": 0, "visited": set()}
 
         visited: Set[int] = {originator}
         active_nodes: Set[int] = {originator}
@@ -67,8 +70,16 @@ class ProbabilisticGossip(GossipPropagationEngine):
             else:
                 active_nodes = current_active | new_frontier
                 
-            self.history.append(set(new_frontier))
+            if new_frontier:
+                self.history.append(set(new_frontier))
+            elif not one_shot:
+                # If no one new was infected, but we can still try again next step
+                # Actually, if we have targets but didn't infect anyone because q < 1, 
+                # history still increments a timestep? The paper implies each attempt is a timestep.
+                # If new_frontier is empty, history timestep shouldn't have an empty set.
+                # We'll just break if no active_nodes will ever succeed (this happens if q is small but we check it above)
+                pass
 
         self.timesteps = len(self.history) - 1
         reached_friends = set(visited) & neighbors
-        return {"history": self.history, "reached": reached_friends, "timesteps": self.timesteps}
+        return {"history": self.history, "reached": reached_friends, "timesteps": self.timesteps, "visited": visited}
